@@ -1,0 +1,10 @@
+Profile comparison: Madrid -> Santiago de Compostela, 12 Jul to 14 Jul 2026
+Every profile starts from the same 60 offers on this route and dates.
+
+Profile                        Acceptable  Recommended           Company     EUR  Length  Departs    Fare           Score
+-----------------------------  ----------  --------------------  --------  -----  ------  ---------  -------------  -----
+Brief example traveller                 6  VB_SCQ_260713_1455_1  VerdeBus  47.84  8h05    Mon 14:55  Green C-       68.92
+Budget traveller                       60  VB_SCQ_260714_0815_1  VerdeBus  53.22  7h42    Tue 08:15  Green C-       84.28
+Business traveller                      4  VB_SCQ_260714_0815_1  VerdeBus  53.22  7h42    Tue 08:15  Green C-       91.84
+Flexibility-focused tourist            42  VB_SCQ_260713_0815_2  VerdeBus  66.25  7h52    Mon 08:15  Green Flex CR  89.95
+Environment-focused traveller          42  VB_SCQ_260713_0815_2  VerdeBus  66.25  7h52    Mon 08:15  Green Flex CR  89.59

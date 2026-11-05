@@ -1,0 +1,40 @@
+Ranking for Flexibility-focused tourist
+=======================================
+Trip: Madrid -> Malaga, 12 Jul to 14 Jul 2026, 1 passenger(s)
+Hard constraints (an offer that breaks any of these is removed BEFORE ranking):
+  * route Madrid -> Malaga
+  * departs between 12 Jul and 14 Jul 2026
+  * at least 1 free seat(s)
+  * luggage allowance of at least 20 kg
+  * ticket must be changeable
+Soft preferences (scored and weighted; they never remove an offer):
+  * preferred departure: morning (06:00-12:00)
+  * weights: price 20%, duration 10%, departure time 10%, flexibility 40%, rating 20%   [normalisation: guarded_minmax]
+
+Searched 2271 offers: 72 match route and dates, 47 meet every hard constraint.
+Removed by: luggage allowance 21, changeable ticket 21, seat availability 6 (an offer can break several).
+
+ #  Offer ID              Company         Date    Dep    Arr    Length    EUR  Tr  Fare           Seats  |  Price  Durat  Depart   Flex  Rating  Total
+--  --------------------  --------------  ------  -----  -----  ------  -----  --  -------------  -----  -  -----  -----  ------  -----  ------  -----
+ 1  CL_AGP_260713_0930_2  CostaLink       13 Jul  09:30  15:55  6h25    44.59   0  Flex CR           16  |   90.4   70.5   100.0  100.0    85.0  92.12
+ 2  CL_AGP_260714_0930_2  CostaLink       14 Jul  09:30  15:52  6h22    42.90   0  Flex CR           40  |   93.0   71.9   100.0  100.0    70.0  89.80
+ 3  VB_AGP_260713_0820_2  VerdeBus        13 Jul  08:20  15:30  7h10    57.05   1  Green Flex CR     33  |   70.7   49.0   100.0  100.0    95.0  88.05
+ 4  CL_AGP_260712_0935_2  CostaLink       12 Jul  09:35  16:02  6h27    49.34   0  Flex CR           44  |   82.9   69.5   100.0  100.0    72.5  88.03
+ 5  VB_AGP_260714_0815_2  VerdeBus        14 Jul  08:15  15:39  7h24    55.22   1  Green Flex CR     11  |   73.6   42.4   100.0  100.0    87.5  86.46
+ 6  CE_AGP_260714_1215_2  Camino Express  14 Jul  12:15  17:39  5h24    85.76   0  Premier CR        25  |   25.5   99.5    91.7  100.0    90.0  82.21
+ 7  CE_AGP_260713_1230_2  Camino Express  13 Jul  12:30  18:16  5h46    82.58   0  Premier CR         9  |   30.5   89.0    83.3  100.0    90.0  81.34
+ 8  CL_AGP_260714_1550_2  CostaLink       14 Jul  15:50  22:25  6h35    40.84   0  Flex CR           43  |   96.3   65.7     0.0  100.0    75.0  80.83
+ 9  CE_AGP_260714_0645_2  Camino Express  14 Jul  06:45  12:28  5h43    93.33   0  Premier CR        26  |   13.5   90.5   100.0  100.0    92.5  80.26
+10  CE_AGP_260713_0650_2  Camino Express  13 Jul  06:50  12:32  5h42    82.61   0  Premier CR        46  |   30.4   91.0   100.0  100.0    72.5  79.68
+Scores are 0-100 (100 = best). Total = sum of weight x score. Fare: C = changeable, R = refundable. * = missing value, neutral score used. = after a rank means a tie.
+Showing 10 of 47 acceptable offers (use --top 0 for all).
+
+Warning: 1 of 47 acceptable offers have a missing value; a neutral score of 50 was used (marked * in the table).
+
+Why CL_AGP_260713_0930_2 (CostaLink, Mon 13 Jul 09:30) ranks first for the Flexibility-focused tourist:
+  + Flexibility 100/100: 'Flex' fare is changeable and refundable
+  + Price 90/100: EUR 6.10 dearer than the cheapest acceptable offer (EUR 38.49)
+  + Rating 85/100: customer rating 4.4/5
+  + Departure time 100/100: departs 09:30, inside your morning (06:00-12:00) window
+  Lead over #2 (CL_AGP_260714_0930_2, CostaLink): 2.32 points, a clear margin. Gains most on rating (+3.0). Loses most on price (-0.5).
+  This is the best match under your hard constraints and these weights (price 20%, duration 10%, departure time 10%, flexibility 40%, rating 20%), not an objectively best ticket.

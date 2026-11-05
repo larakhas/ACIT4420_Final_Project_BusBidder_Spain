@@ -1,0 +1,20 @@
+INFO    bbspain.loader: Corrected line 2284 (CL_CAD_260713_0707_1): destination 'Cádiz' -> 'Cadiz' (normalised)
+INFO    bbspain.loader: Corrected line 2285 (CE_BIO_260713_0807_1): duration_min 999 -> 270 (recomputed from timestamps)
+INFO    bbspain.loader: Loaded 2271 offers (13 rejected, 3 corrected) from /home/claude/busbidder_spain/data
+WARNING bbspain.loader: Rejected line 2270 (SR_AGP_260713_0731_1): price_eur: must be above 0 and at most 500 (got -9.9)
+WARNING bbspain.loader: Rejected line 2271 (SR_LIS_260713_0800_1): destination: unknown destination 'Lisbon'
+WARNING bbspain.loader: Rejected line 2272 (CL_VLC_260732_1000_1): departure: '2026-07-32 10:00' is not a valid date and time (YYYY-MM-DD HH:MM); arrival: '2026-07-32 15:00' is not a valid date and time (YYYY-MM-DD HH:MM)
+WARNING bbspain.loader: Rejected line 2273 (CE_BCN_260713_1100_2): arrival: 2026-07-13 09:30 is not after departure 2026-07-13 11:00
+WARNING bbspain.loader: Rejected line 2274 (VB_SVQ_260713_1200_1): rating: must be between 1 and 5 (got 8.2)
+WARNING bbspain.loader: Rejected line 2275 (NV_GRX_260713_2100_1): price_eur: missing value
+WARNING bbspain.loader: Rejected line 2276 (SR-MLG-123): offer_id: 'SR-MLG-123' does not match the pattern XX_XXX_YYMMDD_HHMM_T
+WARNING bbspain.loader: Rejected line 2277 (CL_ALC_260713_1300_1): seats_available: cannot be negative (got -3)
+WARNING bbspain.loader: Rejected line 2278 (CE_AGP_260713_1400_1): offer_id: identifier disagrees with destination (ODB)
+WARNING bbspain.loader: Rejected line 2279 (XB_BCN_260713_1500_1): company_code: unknown company 'XB'
+WARNING bbspain.loader: Rejected line 2280 (SR_ZAZ_260713_1600_1): transfers: 'one' is not a whole number
+WARNING bbspain.loader: Rejected line 2281 (NV_SCQ_260713_2200_1): arrival: journey of 2940 min exceeds the 1440 min plausibility limit
+WARNING bbspain.loader: Rejected line 2282 (SR_BCN_260710_0730_1): offer_id: duplicate of an offer already loaded
+INFO    bbspain.loader: Corrected line 2283 (VB_VLC_260713_0937_1): destination '  valencia ' -> 'Valencia' (normalised)
+INFO    bbspain.loader: Corrected line 2284 (CL_CAD_260713_0707_1): destination 'Cádiz' -> 'Cadiz' (normalised)
+INFO    bbspain.loader: Corrected line 2285 (CE_BIO_260713_0807_1): duration_min 999 -> 270 (recomputed from timestamps)
+INFO    bbspain.loader: Loaded 2271 offers (13 rejected, 3 corrected) from /home/claude/busbidder_spain/data

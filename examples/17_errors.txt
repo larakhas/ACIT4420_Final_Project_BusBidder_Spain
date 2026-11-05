@@ -1,0 +1,16 @@
+$ bbspain rank -d Atlantis
+Error: Unknown destination 'Atlantis'. Choose one of: Alicante, Barcelona, Bilbao, Cadiz, Cordoba, Granada, Malaga, Murcia, Salamanca, San Sebastian, Santiago de Compostela, Seville, Toledo, Valencia, Zaragoza
+(exit status 2)
+
+$ bbspain rank --weights price=40,duration=25,departure=15,flexibility=10
+Error: Weights must total 100% (or 1.0); they total 90
+(exit status 2)
+
+$ bbspain rank --departure teatime
+Error: Departure preference 'teatime' is not morning/afternoon/evening/night/any or HH:MM-HH:MM
+(exit status 2)
+
+$ bbspain show BB-123
+Error: 'BB-123' is not a booking reference (expected e.g. BB-260705-K7Q2XM)
+(exit status 2)
+

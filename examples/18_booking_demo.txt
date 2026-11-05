@@ -1,0 +1,52 @@
+$ rank (top offer: CL_AGP_260714_0930_2)
+#  Offer ID              Company    Date    Dep    Arr    Length    EUR  Tr  Fare     Seats  |  Price  Durat  Depart   Flex  Total
+-  --------------------  ---------  ------  -----  -----  ------  -----  --  -------  -----  -  -----  -----  ------  -----  -----
+1  CL_AGP_260714_0930_2  CostaLink  14 Jul  09:30  15:52  6h22    42.90   0  Flex CR     40  |   59.4  100.0   100.0  100.0  83.74
+Scores are 0-100 (100 = best). Total = sum of weight x score. Fare: C = changeable, R = refundable. * = missing value, neutral score used. = after a rank means a tie.
+Showing 1 of 24 acceptable offers (use --top 0 for all).
+
+$ book --offer CL_AGP_260714_0930_2 --name "Ana Lopez" --passengers 2
+Booking confirmation
+====================
+  Reference  BB-261105-4SFSK9
+  Status     CONFIRMED
+  Passenger  Ana Lopez (x2)
+  Journey    Madrid -> Malaga with CostaLink
+  Departure  Tue 14 Jul 2026 09:30
+  Arrival    Tue 14 Jul 2026 15:52
+  Fare       Flex: changeable and refundable, 25 kg luggage
+  Price      EUR 42.90 x 2 = EUR 85.80
+  Payment    SIMULATED_PAID (simulated, no real payment)
+
+$ rank (same search again: the booked seats are gone from the top offer)
+#  Offer ID              Company    Date    Dep    Arr    Length    EUR  Tr  Fare     Seats  |  Price  Durat  Depart   Flex  Total
+-  --------------------  ---------  ------  -----  -----  ------  -----  --  -------  -----  -  -----  -----  ------  -----  -----
+1  CL_AGP_260714_0930_2  CostaLink  14 Jul  09:30  15:52  6h22    42.90   0  Flex CR     38  |   59.4  100.0   100.0  100.0  83.74
+Scores are 0-100 (100 = best). Total = sum of weight x score. Fare: C = changeable, R = refundable. * = missing value, neutral score used. = after a rank means a tie.
+Showing 1 of 24 acceptable offers (use --top 0 for all).
+
+$ bookings
+Reference         Status     Company    Destination  Departs       Pax    EUR  Name
+----------------  ---------  ---------  -----------  ------------  ---  -----  ---------
+BB-261105-4SFSK9  CONFIRMED  CostaLink  Malaga       14 Jul 09:30    2  85.80  Ana Lopez
+
+$ cancel BB-261105-4SFSK9
+Booking cancelled
+=================
+  Reference  BB-261105-4SFSK9
+  Status     CANCELLED
+  Passenger  Ana Lopez (x2)
+  Journey    Madrid -> Malaga with CostaLink
+  Departure  Tue 14 Jul 2026 09:30
+  Arrival    Tue 14 Jul 2026 15:52
+  Fare       Flex: changeable and refundable, 25 kg luggage
+  Price      EUR 42.90 x 2 = EUR 85.80
+  Payment    SIMULATED_REFUNDED (simulated, no real payment)
+  Refund     EUR 77.22
+
+$ rank (seats restored)
+#  Offer ID              Company    Date    Dep    Arr    Length    EUR  Tr  Fare     Seats  |  Price  Durat  Depart   Flex  Total
+-  --------------------  ---------  ------  -----  -----  ------  -----  --  -------  -----  -  -----  -----  ------  -----  -----
+1  CL_AGP_260714_0930_2  CostaLink  14 Jul  09:30  15:52  6h22    42.90   0  Flex CR     40  |   59.4  100.0   100.0  100.0  83.74
+Scores are 0-100 (100 = best). Total = sum of weight x score. Fare: C = changeable, R = refundable. * = missing value, neutral score used. = after a rank means a tie.
+Showing 1 of 24 acceptable offers (use --top 0 for all).

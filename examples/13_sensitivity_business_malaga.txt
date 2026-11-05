@@ -1,0 +1,22 @@
+Weight sensitivity for Business traveller: Madrid -> Malaga
+Baseline winner: CE_AGP_260713_0650_2   weights: price 10%, duration 35%, departure time 25%, flexibility 20%, transfers 10%
+
+Scenario                   Winner                Result
+-------------------------  --------------------  -------
+Price -10 points           CE_AGP_260713_0650_2  same
+Price +10 points           CE_AGP_260713_0650_1  CHANGED
+Duration -10 points        CE_AGP_260713_0650_2  same
+Duration +10 points        CE_AGP_260713_0650_2  same
+Departure time -10 points  CE_AGP_260713_0650_2  same
+Departure time +10 points  CE_AGP_260713_0650_2  same
+Flexibility -10 points     CE_AGP_260713_0650_1  CHANGED
+Flexibility +10 points     CE_AGP_260713_0650_2  same
+Transfers -10 points       CE_AGP_260713_0650_2  same
+Transfers +10 points       CE_AGP_260713_0650_2  same
+
+The winner is unchanged in 8 of 10 scenarios.
+
+Winner under each normalisation method (weights unchanged):
+  guarded_minmax  CE_AGP_260713_0650_2
+  minmax          CE_AGP_260713_0650_2
+  ratio           CE_AGP_260713_0650_2

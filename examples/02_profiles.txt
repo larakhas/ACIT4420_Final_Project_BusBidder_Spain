@@ -1,0 +1,25 @@
+brief     Brief example traveller
+          The example request from the project brief: EUR 50 budget, morning departure, at most 1 transfer, changeable ticket required.
+          weights: price 40%, duration 25%, departure time 15%, flexibility 20%
+          hard limits: max_price=50, max_transfers=1, require_changeable=True
+
+budget    Budget traveller
+          Cost matters most and the traveller will accept a slow journey with a connection, but not more than two transfers.
+          weights: price 60%, duration 15%, flexibility 5%, transfers 20%
+          hard limits: max_transfers=2
+
+business  Business traveller
+          Time is money: short direct journeys leaving early, with a ticket that can be changed. Must arrive within the day.
+          weights: price 10%, duration 35%, departure time 25%, flexibility 20%, transfers 10%
+          hard limits: max_transfers=0, max_duration_min=480, require_changeable=True
+
+tourist   Flexibility-focused tourist
+          Plans may change, so the ticket must be changeable and refundable fares are rewarded strongly; rating and a 20 kg luggage allowance also count.
+          weights: price 20%, duration 10%, departure time 10%, flexibility 40%, rating 20%
+          hard limits: require_changeable=True, min_luggage_kg=20
+
+eco       Environment-focused traveller
+          Wants the lowest emissions and fewer transfers; will pay somewhat more.
+          weights: price 15%, duration 10%, flexibility 10%, transfers 10%, rating 15%, CO2 emissions 40%
+          hard limits: max_transfers=1
+

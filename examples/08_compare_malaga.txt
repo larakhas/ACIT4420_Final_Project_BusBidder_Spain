@@ -1,0 +1,10 @@
+Profile comparison: Madrid -> Malaga, 12 Jul to 14 Jul 2026
+Every profile starts from the same 72 offers on this route and dates.
+
+Profile                        Acceptable  Recommended           Company           EUR  Length  Departs    Fare           Score
+-----------------------------  ----------  --------------------  --------------  -----  ------  ---------  -------------  -----
+Brief example traveller                24  CL_AGP_260714_0930_2  CostaLink       42.90  6h22    Tue 09:30  Flex CR        83.74
+Budget traveller                       66  CL_AGP_260714_1550_1  CostaLink       31.42  6h35    Tue 15:50  Light --       89.86
+Business traveller                     28  CE_AGP_260713_0650_2  Camino Express  82.61  5h42    Mon 06:50  Premier CR     88.58
+Flexibility-focused tourist            47  CL_AGP_260713_0930_2  CostaLink       44.59  6h25    Mon 09:30  Flex CR        92.12
+Environment-focused traveller          66  VB_AGP_260714_0815_2  VerdeBus        55.22  7h24    Tue 08:15  Green Flex CR  82.26

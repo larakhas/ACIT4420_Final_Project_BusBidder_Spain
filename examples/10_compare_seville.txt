@@ -1,0 +1,10 @@
+Profile comparison: Madrid -> Seville, 12 Jul to 14 Jul 2026
+Every profile starts from the same 66 offers on this route and dates.
+
+Profile                        Acceptable  Recommended           Company           EUR  Length  Departs    Fare           Score
+-----------------------------  ----------  --------------------  --------------  -----  ------  ---------  -------------  -----
+Brief example traveller                20  VB_SVQ_260713_0815_1  VerdeBus        40.43  7h27    Mon 08:15  Green C-       70.59
+Budget traveller                       64  VB_SVQ_260714_1500_1  VerdeBus        42.18  6h39    Tue 15:00  Green C-       83.72
+Business traveller                     27  CE_SVQ_260713_0650_2  Camino Express  89.85  5h32    Mon 06:50  Premier CR     89.54
+Flexibility-focused tourist            47  VB_SVQ_260713_0815_2  VerdeBus        50.53  7h27    Mon 08:15  Green Flex CR  88.29
+Environment-focused traveller          64  VB_SVQ_260714_1500_2  VerdeBus        52.73  6h39    Tue 15:00  Green Flex CR  88.45

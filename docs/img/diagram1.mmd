@@ -1,0 +1,47 @@
+flowchart LR
+    subgraph IN["Input files"]
+        CSV["companies.csv<br/>destinations.csv<br/>offers.csv"]
+        SET["settings.json"]
+        PRO["profiles.json"]
+    end
+    subgraph LOAD["Loading"]
+        LD["loader.py<br/>parse, validate,<br/>correct, quarantine"]
+        CFG["config.py<br/>profiles.py"]
+    end
+    subgraph CORE["Core"]
+        MK["marketplace.py<br/>facade"]
+        REQ["request.py<br/>TravelRequest<br/>(Limit descriptor)"]
+        RK["scoring.py<br/>Ranker, Weights<br/>@criterion @normaliser"]
+        HC["constraints.py<br/>@hard_constraint"]
+        BK["booking.py<br/>BookingStore"]
+    end
+    subgraph RES["Results"]
+        EX["explain.py"]
+        SE["sensitivity.py"]
+        DI["display.py"]
+    end
+    CLI["cli.py<br/>subcommands +<br/>interactive mode"]
+    REJ[("rejected_offers.csv")]
+    BJS[("bookings.json")]
+    LOG[("busbidder.log")]
+
+    CSV --> LD
+    SET --> CFG
+    PRO --> CFG
+    LD -->|valid offers| MK
+    CFG --> MK
+    CLI --> MK
+    MK --> REQ --> RK
+    RK --> HC
+    MK <-->|seats booked| BK
+    RK --> EX
+    RK --> SE
+    RK --> DI
+    EX --> DI
+    SE --> DI
+    DI --> CLI
+    LD --> REJ
+    BK <--> BJS
+    LD -.-> LOG
+    RK -.-> LOG
+    BK -.-> LOG

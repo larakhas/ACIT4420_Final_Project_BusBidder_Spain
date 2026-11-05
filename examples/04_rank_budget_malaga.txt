@@ -1,0 +1,38 @@
+Ranking for Budget traveller
+============================
+Trip: Madrid -> Malaga, 12 Jul to 14 Jul 2026, 1 passenger(s)
+Hard constraints (an offer that breaks any of these is removed BEFORE ranking):
+  * route Madrid -> Malaga
+  * departs between 12 Jul and 14 Jul 2026
+  * at least 1 free seat(s)
+  * at most 2 transfer(s)
+Soft preferences (scored and weighted; they never remove an offer):
+  * weights: price 60%, duration 15%, flexibility 5%, transfers 20%   [normalisation: guarded_minmax]
+
+Searched 2271 offers: 72 match route and dates, 66 meet every hard constraint.
+Removed by: seat availability 6 (an offer can break several).
+
+ #  Offer ID              Company    Date    Dep    Arr      Length    EUR  Tr  Fare      Seats  |  Price  Durat   Flex  Trnsf  Total
+--  --------------------  ---------  ------  -----  -------  ------  -----  --  --------  -----  -  -----  -----  -----  -----  -----
+ 1  CL_AGP_260714_1550_1  CostaLink  14 Jul  15:50  22:25    6h35    31.42   0  Light --     22  |  100.0   65.7    0.0  100.0  89.86
+ 2  CL_AGP_260714_0930_1  CostaLink  14 Jul  09:30  15:52    6h22    33.00   0  Light --      3  |   97.8   71.9    0.0  100.0  89.44
+ 3  CL_AGP_260713_1545_1  CostaLink  13 Jul  15:45  22:20    6h35    32.96   0  Light --     20  |   97.8   65.7    0.0  100.0  88.55
+ 4  CL_AGP_260713_0930_1  CostaLink  13 Jul  09:30  15:55    6h25    34.30   0  Light --     30  |   95.9   70.5    0.0  100.0  88.12
+ 5  CL_AGP_260714_1550_2  CostaLink  14 Jul  15:50  22:25    6h35    40.84   0  Flex CR      43  |   86.6   65.7  100.0  100.0  86.84
+ 6  CL_AGP_260712_1550_1  CostaLink  12 Jul  15:50  22:16    6h26    35.74   0  Light --     40  |   93.9   70.0    0.0  100.0  86.82
+ 7  CL_AGP_260714_0930_2  CostaLink  14 Jul  09:30  15:52    6h22    42.90   0  Flex CR      40  |   83.7   71.9  100.0  100.0  86.02
+ 8  CL_AGP_260712_0935_1  CostaLink  12 Jul  09:35  16:02    6h27    37.95   0  Light --     38  |   90.7   69.5    0.0  100.0  84.87
+ 9  CL_AGP_260713_0930_2  CostaLink  13 Jul  09:30  15:55    6h25    44.59   0  Flex CR      16  |   81.3   70.5  100.0  100.0  84.36
+10  NV_AGP_260713_2305_1  NocheVia   13 Jul  23:05  06:54+1  7h49    32.07   0  Night --     47  |   99.1   30.5    0.0  100.0  84.02
+Scores are 0-100 (100 = best). Total = sum of weight x score. Fare: C = changeable, R = refundable. * = missing value, neutral score used. = after a rank means a tie.
+Showing 10 of 66 acceptable offers (use --top 0 for all).
+
+Warning: Price carries 60% of the weight and may dominate the result.
+
+Why CL_AGP_260714_1550_1 (CostaLink, Tue 14 Jul 15:50) ranks first for the Budget traveller:
+  + Price 100/100: the cheapest acceptable fare
+  + Transfers 100/100: a direct journey
+  - Flexibility 0/100: 'Light' fare is neither changeable nor refundable
+  Lead over #2 (CL_AGP_260714_0930_1, CostaLink): 0.42 points, a very narrow margin. Gains most on price (+1.3). Loses most on duration (-0.9).
+  Because the margin is small, small changes in weights could change the winner (see the `sensitivity` command).
+  This is the best match under your hard constraints and these weights (price 60%, duration 15%, flexibility 5%, transfers 20%), not an objectively best ticket.

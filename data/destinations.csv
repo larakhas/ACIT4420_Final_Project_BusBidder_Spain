@@ -1,0 +1,16 @@
+code,name,region,coastal,distance_km
+BCN,Barcelona,Catalonia,true,620
+VLC,Valencia,Valencia,true,355
+SVQ,Seville,Andalusia,false,530
+AGP,Malaga,Andalusia,true,530
+GRX,Granada,Andalusia,false,430
+ODB,Cordoba,Andalusia,false,400
+BIO,Bilbao,Basque Country,false,400
+EAS,San Sebastian,Basque Country,true,470
+ZAZ,Zaragoza,Aragon,false,320
+ALC,Alicante,Valencia,true,420
+MJV,Murcia,Murcia,false,400
+SLM,Salamanca,Castile and Leon,false,210
+TOL,Toledo,Castile-La Mancha,false,75
+SCQ,Santiago de Compostela,Galicia,false,620
+CAD,Cadiz,Andalusia,true,650

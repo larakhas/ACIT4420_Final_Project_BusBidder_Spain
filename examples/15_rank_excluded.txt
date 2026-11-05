@@ -1,0 +1,49 @@
+Ranking for Brief example traveller
+===================================
+Trip: Madrid -> Malaga, 12 Jul to 14 Jul 2026, 1 passenger(s)
+Hard constraints (an offer that breaks any of these is removed BEFORE ranking):
+  * route Madrid -> Malaga
+  * departs between 12 Jul and 14 Jul 2026
+  * at least 1 free seat(s)
+  * price at most EUR 50.00 per ticket
+  * at most 1 transfer(s)
+  * ticket must be changeable
+Soft preferences (scored and weighted; they never remove an offer):
+  * preferred departure: morning (06:00-12:00)
+  * weights: price 40%, duration 25%, departure time 15%, flexibility 20%   [normalisation: guarded_minmax]
+
+Searched 2271 offers: 72 match route and dates, 24 meet every hard constraint.
+Removed by: budget 25, changeable ticket 21, seat availability 6 (an offer can break several).
+
+#  Offer ID              Company    Date    Dep    Arr    Length    EUR  Tr  Fare     Seats  |  Price  Durat  Depart   Flex  Total
+-  --------------------  ---------  ------  -----  -----  ------  -----  --  -------  -----  -  -----  -----  ------  -----  -----
+1  CL_AGP_260714_0930_2  CostaLink  14 Jul  09:30  15:52  6h22    42.90   0  Flex CR     40  |   59.4  100.0   100.0  100.0  83.74
+2  CL_AGP_260713_0930_2  CostaLink  13 Jul  09:30  15:55  6h25    44.59   0  Flex CR     16  |   43.8   98.0   100.0  100.0  77.01
+3  CL_AGP_260714_1550_2  CostaLink  14 Jul  15:50  22:25  6h35    40.84   0  Flex CR     43  |   78.3   91.4     0.0  100.0  74.18
+Scores are 0-100 (100 = best). Total = sum of weight x score. Fare: C = changeable, R = refundable. * = missing value, neutral score used. = after a rank means a tie.
+Showing 3 of 24 acceptable offers (use --top 0 for all).
+
+Why CL_AGP_260714_0930_2 (CostaLink, Tue 14 Jul 09:30) ranks first for the Brief example traveller:
+  + Duration 100/100: the fastest acceptable journey
+  + Flexibility 100/100: 'Flex' fare is changeable and refundable
+  + Departure time 100/100: departs 09:30, inside your morning (06:00-12:00) window
+  - Price 59/100: EUR 4.41 dearer than the cheapest acceptable offer (EUR 38.49)
+  Lead over #2 (CL_AGP_260713_0930_2, CostaLink): 6.73 points, a clear margin. Gains most on price (+6.2), duration (+0.5).
+  This is the best match under your hard constraints and these weights (price 40%, duration 25%, departure time 15%, flexibility 20%), not an objectively best ticket.
+
+Excluded offers (48; first 15 shown):
+  SR_AGP_260712_0730_1     EUR  39.79  broke: seat availability, changeable ticket
+  SR_AGP_260712_0730_2     EUR  46.95  broke: seat availability
+  SR_AGP_260713_0730_1     EUR  35.98  broke: changeable ticket
+  SR_AGP_260714_0730_1     EUR  34.32  broke: changeable ticket
+  SR_AGP_260712_1100_1     EUR  36.42  broke: changeable ticket
+  SR_AGP_260713_1100_1     EUR  33.72  broke: changeable ticket
+  SR_AGP_260714_1110_1     EUR  35.79  broke: changeable ticket
+  SR_AGP_260712_1530_1     EUR  38.47  broke: changeable ticket
+  SR_AGP_260713_1530_1     EUR  36.21  broke: changeable ticket
+  SR_AGP_260714_1530_1     EUR  36.81  broke: seat availability, changeable ticket
+  CE_AGP_260712_0645_1     EUR  67.99  broke: budget
+  CE_AGP_260712_0645_2     EUR  98.59  broke: budget
+  CE_AGP_260713_0650_1     EUR  56.97  broke: budget
+  CE_AGP_260713_0650_2     EUR  82.61  broke: budget
+  CE_AGP_260714_0645_1     EUR  64.36  broke: budget

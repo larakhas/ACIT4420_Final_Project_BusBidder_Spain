@@ -1,0 +1,39 @@
+Ranking for Brief example traveller
+===================================
+Trip: Madrid -> Malaga, 12 Jul to 14 Jul 2026, 1 passenger(s)
+Hard constraints (an offer that breaks any of these is removed BEFORE ranking):
+  * route Madrid -> Malaga
+  * departs between 12 Jul and 14 Jul 2026
+  * at least 1 free seat(s)
+  * price at most EUR 50.00 per ticket
+  * at most 1 transfer(s)
+  * ticket must be changeable
+Soft preferences (scored and weighted; they never remove an offer):
+  * preferred departure: morning (06:00-12:00)
+  * weights: price 40%, duration 25%, departure time 15%, flexibility 20%   [normalisation: guarded_minmax]
+
+Searched 2271 offers: 72 match route and dates, 24 meet every hard constraint.
+Removed by: budget 25, changeable ticket 21, seat availability 6 (an offer can break several).
+
+ #  Offer ID              Company    Date    Dep    Arr      Length    EUR  Tr  Fare           Seats  |  Price  Durat  Depart   Flex  Total
+--  --------------------  ---------  ------  -----  -------  ------  -----  --  -------------  -----  -  -----  -----  ------  -----  -----
+ 1  CL_AGP_260714_0930_2  CostaLink  14 Jul  09:30  15:52    6h22    42.90   0  Flex CR           40  |   59.4  100.0   100.0  100.0  83.74
+ 2  CL_AGP_260713_0930_2  CostaLink  13 Jul  09:30  15:55    6h25    44.59   0  Flex CR           16  |   43.8   98.0   100.0  100.0  77.01
+ 3  CL_AGP_260714_1550_2  CostaLink  14 Jul  15:50  22:25    6h35    40.84   0  Flex CR           43  |   78.3   91.4     0.0  100.0  74.18
+ 4  NV_AGP_260713_2305_2  NocheVia   13 Jul  23:05  06:54+1  7h49    38.49   0  Night Plus C-     26  |  100.0   42.4     0.0   60.0  62.60
+ 5  SR_AGP_260714_0730_2  SolRuta    14 Jul  07:30  16:06    8h36    40.50   1  Plus C-           48  |   81.5   11.3   100.0   60.0  62.40
+ 6  SR_AGP_260713_1100_2  SolRuta    13 Jul  11:00  19:53    8h53    39.79   1  Plus C-           25  |   88.0    0.0   100.0   60.0  62.21
+ 7  VB_AGP_260714_0815_1  VerdeBus   14 Jul  08:15  15:39    7h24    44.18   1  Green C-          21  |   47.6   58.9   100.0   60.0  60.76
+ 8  CL_AGP_260712_0935_2  CostaLink  12 Jul  09:35  16:02    6h27    49.34   0  Flex CR           44  |    0.0   96.7   100.0  100.0  59.17
+ 9  VB_AGP_260713_0820_1  VerdeBus   13 Jul  08:20  15:30    7h10    45.64   1  Green C-          26  |   34.1   68.2   100.0   60.0  57.69
+10  CL_AGP_260712_1550_2  CostaLink  12 Jul  15:50  22:16    6h26    46.47   0  Flex CR           20  |   26.5   97.4     0.0  100.0  54.92
+Scores are 0-100 (100 = best). Total = sum of weight x score. Fare: C = changeable, R = refundable. * = missing value, neutral score used. = after a rank means a tie.
+Showing 10 of 24 acceptable offers (use --top 0 for all).
+
+Why CL_AGP_260714_0930_2 (CostaLink, Tue 14 Jul 09:30) ranks first for the Brief example traveller:
+  + Duration 100/100: the fastest acceptable journey
+  + Flexibility 100/100: 'Flex' fare is changeable and refundable
+  + Departure time 100/100: departs 09:30, inside your morning (06:00-12:00) window
+  - Price 59/100: EUR 4.41 dearer than the cheapest acceptable offer (EUR 38.49)
+  Lead over #2 (CL_AGP_260713_0930_2, CostaLink): 6.73 points, a clear margin. Gains most on price (+6.2), duration (+0.5).
+  This is the best match under your hard constraints and these weights (price 40%, duration 25%, departure time 15%, flexibility 20%), not an objectively best ticket.

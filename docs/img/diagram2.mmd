@@ -1,0 +1,13 @@
+flowchart TD
+    A["Traveller request<br/>profile + overrides"] --> B{"Scope:<br/>route and dates"}
+    B -->|outside| X1["not part of<br/>this search"]
+    B --> C{"Hard constraints:<br/>seats, budget, transfers,<br/>duration, luggage,<br/>changeable, refundable"}
+    C -->|any broken| X2["excluded, every<br/>reason recorded"]
+    C -->|all met| D["Score each used criterion 0-100<br/>relative: normaliser<br/>absolute: fixed rule"]
+    D --> E{"Value<br/>missing?"}
+    E -->|yes| F["neutral score 50,<br/>flagged with *"]
+    E -->|no| G
+    F --> G["Total = sum of<br/>weight x score"]
+    G --> H["Sort: total, then price,<br/>departure, offer id"]
+    H --> I["Explanation of #1,<br/>warnings"]
+    I --> J["Optional booking:<br/>re-check seats, save"]

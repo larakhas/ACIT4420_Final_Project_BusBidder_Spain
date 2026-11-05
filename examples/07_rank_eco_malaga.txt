@@ -1,0 +1,39 @@
+Ranking for Environment-focused traveller
+=========================================
+Trip: Madrid -> Malaga, 12 Jul to 14 Jul 2026, 1 passenger(s)
+Hard constraints (an offer that breaks any of these is removed BEFORE ranking):
+  * route Madrid -> Malaga
+  * departs between 12 Jul and 14 Jul 2026
+  * at least 1 free seat(s)
+  * at most 1 transfer(s)
+Soft preferences (scored and weighted; they never remove an offer):
+  * weights: price 15%, duration 10%, flexibility 10%, transfers 10%, rating 15%, CO2 emissions 40%   [normalisation: guarded_minmax]
+
+Searched 2271 offers: 72 match route and dates, 66 meet every hard constraint.
+Removed by: seat availability 6 (an offer can break several).
+
+ #  Offer ID              Company   Date    Dep    Arr    Length    EUR  Tr  Fare           Seats  |  Price  Durat   Flex  Trnsf  Rating    CO2  Total
+--  --------------------  --------  ------  -----  -----  ------  -----  --  -------------  -----  -  -----  -----  -----  -----  ------  -----  -----
+ 1  VB_AGP_260714_0815_2  VerdeBus  14 Jul  08:15  15:39  7h24    55.22   1  Green Flex CR     11  |   66.2   42.4  100.0   60.0    87.5   97.4  82.26
+ 2  VB_AGP_260713_0820_1  VerdeBus  13 Jul  08:20  15:30  7h10    45.64   1  Green C-          26  |   79.8   49.0   60.0   60.0    87.5   99.5  81.80
+ 3  VB_AGP_260713_0820_2  VerdeBus  13 Jul  08:20  15:30  7h10    57.05   1  Green Flex CR     33  |   63.6   49.0  100.0   60.0    95.0   91.7  81.39
+ 4  VB_AGP_260713_1450_1  VerdeBus  13 Jul  14:50  22:14  7h24    45.56   1  Green C-          48  |   79.9   42.4   60.0   60.0   100.0   94.8  81.16
+ 5  VB_AGP_260712_1445_2  VerdeBus  12 Jul  14:45  21:50  7h05    63.95   1  Green Flex CR     25  |   53.9   51.4  100.0   60.0    87.5   93.3  79.65
+ 6  VB_AGP_260714_1445_1  VerdeBus  14 Jul  14:45  22:15  7h30    44.13   1  Green C-          24  |   82.0   39.5   60.0   60.0    87.5   95.3  79.51
+ 7  VB_AGP_260714_0815_1  VerdeBus  14 Jul  08:15  15:39  7h24    44.18   1  Green C-          21  |   81.9   42.4   60.0   60.0    70.0  100.0  79.02
+ 8  VB_AGP_260712_0830_1  VerdeBus  12 Jul  08:30  15:32  7h02    47.00   1  Green C-          34  |   77.9   52.9   60.0   60.0    87.5   92.2  78.99
+ 9  VB_AGP_260714_1445_2  VerdeBus  14 Jul  14:45  22:15  7h30    55.16   1  Green Flex CR     34  |   66.3   39.5  100.0   60.0    72.5   92.7  77.87
+10  VB_AGP_260712_1445_1  VerdeBus  12 Jul  14:45  21:50  7h05    51.16   1  Green C-          30  |   72.0   51.4   60.0   60.0    72.5   91.7  75.50
+Scores are 0-100 (100 = best). Total = sum of weight x score. Fare: C = changeable, R = refundable. * = missing value, neutral score used. = after a rank means a tie.
+Showing 10 of 66 acceptable offers (use --top 0 for all).
+
+Warning: 10 of 66 acceptable offers have a missing value; a neutral score of 50 was used (marked * in the table).
+
+Why VB_AGP_260714_0815_2 (VerdeBus, Tue 14 Jul 08:15) ranks first for the Environment-focused traveller:
+  + CO2 emissions 97/100: 18.9 kg CO2 per passenger
+  + Rating 88/100: customer rating 4.5/5
+  + Flexibility 100/100: 'Green Flex' fare is changeable and refundable
+  - Duration 42/100: 7h24, 121 min slower than the fastest acceptable option
+  Lead over #2 (VB_AGP_260713_0820_1, VerdeBus): 0.46 points, a very narrow margin. Gains most on flexibility (+4.0). Loses most on price (-2.0).
+  Because the margin is small, small changes in weights could change the winner (see the `sensitivity` command).
+  This is the best match under your hard constraints and these weights (price 15%, duration 10%, flexibility 10%, transfers 10%, rating 15%, CO2 emissions 40%), not an objectively best ticket.

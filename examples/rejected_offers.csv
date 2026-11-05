@@ -1,0 +1,14 @@
+line,offer_id,reasons,offer_id,company_code,destination,departure,arrival,duration_min,price_eur,transfers,luggage_kg,fare_name,changeable,refundable,seats_available,rating,co2_kg
+2270,SR_AGP_260713_0731_1,price_eur: must be above 0 and at most 500 (got -9.9),SR_AGP_260713_0731_1,SR,Malaga,2026-07-13 07:31,2026-07-13 15:20,469,-9.90,1,15,Saver,false,false,20,3.4,30.0
+2271,SR_LIS_260713_0800_1,destination: unknown destination 'Lisbon',SR_LIS_260713_0800_1,SR,Lisbon,2026-07-13 08:00,2026-07-13 16:00,480,40.00,1,15,Saver,false,false,20,3.4,30.0
+2272,CL_VLC_260732_1000_1,departure: '2026-07-32 10:00' is not a valid date and time (YYYY-MM-DD HH:MM) | arrival: '2026-07-32 15:00' is not a valid date and time (YYYY-MM-DD HH:MM),CL_VLC_260732_1000_1,CL,Valencia,2026-07-32 10:00,2026-07-32 15:00,300,30.00,0,15,Light,false,false,10,4.0,20.0
+2273,CE_BCN_260713_1100_2,arrival: 2026-07-13 09:30 is not after departure 2026-07-13 11:00,CE_BCN_260713_1100_2,CE,Barcelona,2026-07-13 11:00,2026-07-13 09:30,390,88.00,0,30,Premier,true,true,10,4.5,36.0
+2274,VB_SVQ_260713_1200_1,rating: must be between 1 and 5 (got 8.2),VB_SVQ_260713_1200_1,VB,Seville,2026-07-13 12:00,2026-07-13 20:30,510,45.00,0,20,Green,true,false,10,8.2,19.0
+2275,NV_GRX_260713_2100_1,price_eur: missing value,NV_GRX_260713_2100_1,NV,Granada,2026-07-13 21:00,2026-07-14 05:00,480,,0,15,Night,false,false,10,3.8,27.0
+2276,SR-MLG-123,offer_id: 'SR-MLG-123' does not match the pattern XX_XXX_YYMMDD_HHMM_T,SR-MLG-123,SR,Malaga,2026-07-13 09:00,2026-07-13 17:00,480,35.00,1,15,Saver,false,false,9,3.5,36.0
+2277,CL_ALC_260713_1300_1,seats_available: cannot be negative (got -3),CL_ALC_260713_1300_1,CL,Alicante,2026-07-13 13:00,2026-07-13 18:30,330,28.00,0,15,Light,false,false,-3,4.0,24.0
+2278,CE_AGP_260713_1400_1,offer_id: identifier disagrees with destination (ODB),CE_AGP_260713_1400_1,CE,Cordoba,2026-07-13 14:00,2026-07-13 18:00,240,52.00,0,20,Standard,true,false,10,4.2,24.0
+2279,XB_BCN_260713_1500_1,company_code: unknown company 'XB',XB_BCN_260713_1500_1,XB,Barcelona,2026-07-13 15:00,2026-07-13 23:00,480,40.00,0,15,Saver,false,false,10,3.1,30.0
+2280,SR_ZAZ_260713_1600_1,transfers: 'one' is not a whole number,SR_ZAZ_260713_1600_1,SR,Zaragoza,2026-07-13 16:00,2026-07-13 22:00,360,29.00,one,15,Saver,false,false,10,3.5,21.0
+2281,NV_SCQ_260713_2200_1,arrival: journey of 2940 min exceeds the 1440 min plausibility limit,NV_SCQ_260713_2200_1,NV,Santiago de Compostela,2026-07-13 22:00,2026-07-15 23:00,2940,50.00,1,15,Night,false,false,10,3.7,40.0
+2282,SR_BCN_260710_0730_1,offer_id: duplicate of an offer already loaded,SR_BCN_260710_0730_1,SR,Barcelona,2026-07-10 07:30,2026-07-10 17:56,626,43.68,2,15,Saver,false,false,40,,
