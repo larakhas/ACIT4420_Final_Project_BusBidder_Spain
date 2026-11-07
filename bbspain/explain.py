@@ -1,9 +1,9 @@
-"""Generate a short explanation of the top-ranked offer from the data itself.
+"""Explain why an offer ranked first for this traveller.
 
-The text names strengths (criteria where the offer scores well), remaining disadvantages
-(criteria where it scores poorly), and how narrow or wide its lead over the runner-up is. It
-never calls the offer "the best": only the best under this traveller's constraints, weights and
-scoring assumptions.
+I use the scores to show where the offer did well and where it scored poorly.
+If there's a runner-up, I include the gap between their scores so the traveller
+can see how close the result was. The ranking depends on the traveller's
+constraints, the weights they chose and how the program scores each criterion.
 """
 
 from __future__ import annotations
