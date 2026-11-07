@@ -1,10 +1,12 @@
-"""Hard constraints: conditions an offer must meet to be ranked at all.
+"""Check which offers meet the requirements before ranking them.
 
-Each constraint is a small function registered with the @hard_constraint decorator. The
-decorator also records (a) when the constraint is active for a given request and (b) a sentence
-describing it, so the user interface can list exactly what was enforced. Adding a new
-constraint means writing one decorated function; the filter, the CLI output and the
-"removed by" statistics pick it up automatically.
+I use a small function for each rule and register it with @hard_constraint.
+The decorator records when the rule applies and how to describe it. An offer
+has to pass every rule that applies to the request before it can be ranked.
+
+To add a new rule, I just write another function with the same decorator.
+The filter then uses the rule automatically, and the CLI shows which rules
+were applied and how many offers each one removed.
 """
 
 from __future__ import annotations
