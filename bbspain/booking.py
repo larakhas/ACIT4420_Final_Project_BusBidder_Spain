@@ -1,13 +1,15 @@
-"""Simulated bookings, stored in a JSON file.
+"""Store simulated bookings in a JSON file.
 
-Seat capacity is stored once. Each offer keeps its original seat count in offers.csv, and the
-seats still free are always computed as  original - seats in CONFIRMED bookings.  Booking
-therefore reduces capacity, cancelling restores it, and the two numbers can never disagree.
-No payment data is collected; payment status is simulated.
+I keep the original seat count for each offer in offers.csv. To find out how many
+seats are free, I subtract the number of seats in CONFIRMED bookings from that
+count. If someone cancels, their seats become available again. That way, I only
+have one seat count to maintain. Payment status is simulated, and I don't
+collect any payment details.
 
-Booking references look like  BB-260705-K7Q2XM : a date part and six characters from an
-alphabet without look-alike symbols (no I, O, 0, 1). The last character is a check character
-computed from the others, so a mistyped reference is detected before any lookup.
+A booking reference looks like BB-260705-K7Q2XM. After the date, there are six
+characters. I leave out I, O, 0 and 1 because they're easy to mix up. The last
+character is calculated from the others, so I can check for typos before looking
+up the booking.
 """
 
 from __future__ import annotations
