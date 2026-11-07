@@ -1,8 +1,8 @@
-"""Error categories for BusBidder Spain.
+"""Define the error types used in BusBidder Spain.
 
-Every failure the program raises on purpose is a BusBidderError, so the command-line layer can
-catch one base class, print a clear message and exit with a non-zero status, while real bugs
-still show a traceback.
+I use BusBidderError as the base class for errors the program raises on purpose.
+The CLI catches these errors, prints a clear message and exits with a non-zero
+status code. Unexpected errors still show a traceback to help with debugging.
 """
 
 
