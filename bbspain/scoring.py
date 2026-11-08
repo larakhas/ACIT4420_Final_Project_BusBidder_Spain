@@ -1,18 +1,24 @@
-"""The weighted scoring model: normalisers, criteria, weights and the ranker.
 
-    Total(j) = sum over criteria c of  weight_c * score_c(j)         (all scores 0-100)
 
-Raw values (euros, minutes, categories) are never combined directly. Each criterion first turns
-its raw value into a 0-100 score, where 100 is always "best", whichever direction is better.
 
-Two kinds of criteria exist:
-  * RELATIVE criteria (price, duration, emissions) have no natural good level, so they are
-    scored against the other acceptable offers with a pluggable normaliser.
-  * ABSOLUTE criteria (departure fit, flexibility, transfers, rating) have a meaningful fixed
-    scale, so their score does not change when other offers enter or leave the result set.
+"""Rank offers using the traveller's weights.
 
-Normalisers and criteria are registered with decorators, so settings, profiles, the weight
-validator and the CLI discover them by name instead of hard-coding lists.
+I give each criterion a score from 0 to 100, with 100 as the best score.
+This puts values like price in euros and travel time in minutes on the same
+scale. For each offer, I multiply each score by its weight and add up the
+results to get the total score.
+
+For price, travel time and emissions, I use the selected normaliser to compare
+each offer with the others that meet the traveller's requirements. These scores
+can change when a different set of offers qualifies.
+
+For departure time, flexibility, transfers and rating, I use fixed scales.
+For example, the departure score depends on how well the offer matches the
+traveller's preferred time. Adding or removing other offers won't change it.
+
+I register each normaliser and criterion by name using decorators. The settings,
+profiles, weight validator and CLI can then look them up without having to
+maintain separate lists.
 """
 
 from __future__ import annotations
