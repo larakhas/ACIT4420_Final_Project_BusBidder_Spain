@@ -1,8 +1,12 @@
-"""Domain objects of the marketplace.
 
-All of them are frozen dataclasses: once an offer has been validated nothing can change it by
-accident. Seat counts in particular are never edited in place; see booking.py.
+"""Define the data classes used in the marketplace.
+
+I use frozen dataclasses to prevent accidental changes to an offer after
+validation. Each offer keeps its original seat count. The code in booking.py
+uses confirmed bookings to work out how many seats are still available.
 """
+
+
 
 from __future__ import annotations
 

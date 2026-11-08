@@ -1,7 +1,8 @@
-"""The traveller's request: where, when, hard limits and soft preferences.
+"""Store where and when the traveller wants to travel, their limits and their preferences.
 
-Numeric limits are validated by a small descriptor (`Limit`), so an impossible value such as a
-negative budget is rejected at the moment it is assigned, wherever in the program that happens.
+I use a descriptor called Limit to check numeric limits whenever they're set.
+For example, if any part of the program tries to set a negative budget,
+Limit rejects it right away.
 """
 
 from __future__ import annotations
