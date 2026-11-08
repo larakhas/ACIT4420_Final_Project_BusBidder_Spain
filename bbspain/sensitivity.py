@@ -1,4 +1,6 @@
-"""How stable is the recommendation? Move each weight by +/-10 points and re-rank."""
+"""Check whether the same offer still ranks first when each weight is
+increased or decreased by 10 points, one at a time.
+"""
 
 from __future__ import annotations
 
