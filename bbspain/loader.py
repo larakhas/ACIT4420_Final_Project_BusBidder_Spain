@@ -1,16 +1,21 @@
-"""Read the three CSV files, convert types and validate every offer.
+"""Read the three CSV files, convert values to the right types and check each offer.
 
-Policy (also documented in README and report):
+If a file is missing, can't be opened or is missing a required column, I raise
+DataFileError and stop. If an offer contains impossible or conflicting values,
+I set it aside and record every reason I find. The CLI writes these offers and
+their reasons to output/rejected_offers.csv so they can be reviewed.
 
-* A missing/unreadable file or a missing column is FATAL (DataFileError): nothing sensible can
-  be ranked without it.
-* An impossible or contradictory offer is REJECTED: it is set aside, with every reason found,
-  in a quarantine list that the CLI writes to output/rejected_offers.csv for human review.
-* An unambiguous formatting problem is CORRECTED and logged: case/accents/spaces in the
-  destination name, or a stated duration that disagrees with the timestamps.
-* A missing optional value (rating, CO2) is KEPT as None and handled by the scoring model.
-* Zero seats is valid data: the offer is kept and removed later by the seat constraint.
+I fix and log differences in capitalisation, accents and spacing in destination
+names. If the stated duration doesn't match the departure and arrival times,
+I use those times to calculate the duration and log the correction.
+
+I keep missing ratings and CO2 values as None so the scoring model can handle
+them. An offer with zero seats is still valid. The seat constraint filters it
+out later.
+
+The README and report also explain these rules.
 """
+
 
 from __future__ import annotations
 
