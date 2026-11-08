@@ -1,14 +1,18 @@
-"""Evaluation experiments used in the report (run from the project root):
+"""Run the four experiments used in the report.
+
+From the project root, run the following command to save the results.
 
     python scripts/evaluate.py > examples/20_evaluation.txt
 
-1. Who wins? For every profile x destination (5 x 15 = 75 searches), which company's offer is
-   ranked first. Shows whether some company is systematically favoured or never recommended.
-2. Does the normalisation method matter? Re-runs the 75 searches under each normaliser and
-   counts the searches whose winner changes.
-3. How stable are the winners? Moves each weight by +/-10 points in every search and counts how
-   often the winner changes.
-4. Missing data: how often is a top-ranked offer one with a missing value?
+I test all 5 traveller profiles across 15 destinations, giving 75 searches.
+
+1. Count how often each company ranks first to see which companies appear
+   most often and whether any are never recommended.
+2. Repeat the searches with each normaliser and count how many searches
+   give a different top offer.
+3. Raise and lower each weight by 10 points, one at a time, and count how
+   often a different offer ranks first.
+4. Count how often the top offer has a missing rating or CO2 value.
 """
 
 import sys
