@@ -283,7 +283,7 @@ def load_catalogue(data_dir: Path) -> Catalogue:
     for c in catalogue.corrections:
         log.info("Corrected line %d (%s): %s", c.line, c.offer_id, c.message)
     log.info("Loaded %d offers (%d rejected, %d corrected) from %s", len(catalogue.offers),
-             len(catalogue.rejected), len(catalogue.corrections), data_dir)
+                    len(catalogue.rejected), len(catalogue.corrections), data_dir.name + "/")
     return catalogue
 
 
