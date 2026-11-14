@@ -25,7 +25,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 from bbspain.config import load_settings  # noqa: E402
 from bbspain.logging_setup import configure_logging  # noqa: E402
 from bbspain.marketplace import Marketplace  # noqa: E402
-from bbspain.scoring import NORMALISERS, Ranker  # noqa: E402
+from bbspain.scoring import CRITERIA, NORMALISERS, Ranker  # noqa: E402
 from bbspain.sensitivity import weight_sensitivity  # noqa: E402
 
 
@@ -67,6 +67,30 @@ def main() -> None:
     for name, ids in winners.items():
         diff = sum(a != b for a, b in zip(base, ids))
         print(f"  {name:<15} winner differs from {settings.normaliser} in {diff} of {len(cases)} searches")
+
+
+    active = normalised = reordered = 0
+    plain = replace(settings, normaliser="minmax")
+    guarded = replace(settings, normaliser="guarded_minmax")
+    for p, d in cases:
+        req = p.make_request(d, d_from, d_to)
+        with_guard = Ranker(guarded).rank(offers, req, p.weights)
+        without = Ranker(plain).rank(offers, req, p.weights)
+        if [s.offer.offer_id for s in with_guard.ranked[:5]] != [s.offer.offer_id for s in without.ranked[:5]]:
+            reordered += 1
+        for key in p.weights.used():
+            c = CRITERIA[key]
+            values = [v for v in (c.raw(o, req) for o in with_guard.filtered.accepted) if v is not None]
+            if c.kind != "relative" or not values:
+                continue
+            normalised += 1
+            if max(values) - min(values) < settings.min_span_fraction * min(values):
+                active += 1
+    print(f"  The guard is active in {active} of {normalised} relative-criterion normalisations")
+    print(f"  guarded_minmax and minmax give a different top-5 order in {reordered} of {len(cases)} searches")
+
+
+
 
     print("\n3. Weight sensitivity (+/-10 points on each used weight, 75 searches)")
     print("-" * 60)
