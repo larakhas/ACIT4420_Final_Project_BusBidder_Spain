@@ -43,7 +43,7 @@ def test_reference_lookup_ignores_case_and_spaces(store):
 
 
 @pytest.mark.parametrize("text", ["", "BB-260705-ABCDEF", "XX-260705-K7Q2XM", "BB-26070-K7Q2XM",
-                                  "BB-260705-K7Q2X", "BB-260705-K7Q2XM1", "BB-260705-K7Q2IM"])
+                                  "BB-260705-K7Q2X", "BB-260705-K7Q2XM1", "BB-260705-K7Q2IS"])
 def test_malformed_reference_rejected(text):
     with pytest.raises(InvalidReferenceError):
         parse_reference(text)
