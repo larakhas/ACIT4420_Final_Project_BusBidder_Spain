@@ -20,7 +20,7 @@ def store(tmp_path):
     return BookingStore(tmp_path / "bookings.json", rng=random.Random(1), clock=lambda: NOW)
 
 
-# ----------------------------------------------------------------------------- references
+# references
 
 def test_reference_has_expected_format_and_valid_check(store):
     b = store.book(make_offer(), "Ana Lopez")
@@ -64,7 +64,7 @@ def test_well_formed_unknown_reference_not_found(store):
         store.get(ref)
 
 
-# ------------------------------------------------------------------------------ passenger
+# passenger
 
 @pytest.mark.parametrize("name", ["Ana Lopez", "José María", "O'Brien", "Anne-Marie Dupont", "Åse Nilsen"])
 def test_valid_names(name):
@@ -81,7 +81,7 @@ def test_name_whitespace_is_normalised():
     assert validate_name("  Ana    Lopez ") == "Ana Lopez"
 
 
-# ------------------------------------------------------------------------------- capacity
+# capacity
 
 def test_booking_reduces_capacity_and_stores_fare(store):
     offer = make_offer(seats=5, changeable=True, refundable=True, price=40.0)
@@ -132,7 +132,7 @@ def test_apply_inventory_subtracts_only_confirmed_seats(store):
     assert store.apply_inventory([offer])[0].seats_available == 5
 
 
-# ----------------------------------------------------------------------------- persistence
+# persistence
 
 def test_bookings_survive_reload(tmp_path):
     path = tmp_path / "b.json"
@@ -169,7 +169,7 @@ def test_no_temporary_file_left_behind(store, tmp_path):
     assert [p.name for p in tmp_path.iterdir()] == ["bookings.json"]
 
 
-# ---------------------------------------------------------------------------- cancellation
+# cancellation
 
 def test_cancel_refundable_returns_price_minus_fee(store):
     offer = make_offer(seats=5, refundable=True, price=50.0)
@@ -209,3 +209,39 @@ def test_all_lists_in_creation_order(store):
     s = BookingStore(store.path, rng=random.Random(3), clock=lambda: next(times))
     refs = [s.book(make_offer(seats=9), "Ana Lopez").reference for _ in range(3)]
     assert [b.reference for b in s.all()] == refs
+    
+def test_check_character_catches_every_single_character_typo():
+    date_part, body = "260705", "K7Q2X"
+    good = check_char(date_part, body)
+    text = date_part + body
+    for i, original in enumerate(text):
+        for other in ("0123456789" if i < 6 else ALPHABET):
+            if other == original:
+                continue
+            typo = text[:i] + other + text[i + 1:]
+            assert check_char(typo[:6], typo[6:]) != good, f"typo {typo} not detected"
+
+
+def test_documented_example_reference_is_valid():
+    assert parse_reference("BB-260705-K7Q2XZ") == "BB-260705-K7Q2XZ"
+
+
+def test_cannot_book_a_bus_that_has_left(tmp_path):
+    after = datetime(2026, 7, 13, 9, 1)
+    s = BookingStore(tmp_path / "b.json", clock=lambda: NOW, travel_clock=lambda: after)
+    with pytest.raises(BookingError, match="departed"):
+        s.book(make_offer(), "Ana Lopez")
+    assert s.all() == []
+
+
+def test_departure_exactly_now_is_too_late(tmp_path):
+    at = datetime(2026, 7, 13, 9, 0)
+    s = BookingStore(tmp_path / "b.json", clock=lambda: NOW, travel_clock=lambda: at)
+    with pytest.raises(BookingError, match="departed"):
+        s.book(make_offer(), "Ana Lopez")
+
+
+def test_can_book_one_minute_before_departure(tmp_path):
+    before = datetime(2026, 7, 13, 8, 59)
+    s = BookingStore(tmp_path / "b.json", clock=lambda: NOW, travel_clock=lambda: before)
+    assert s.book(make_offer(), "Ana Lopez").status is BookingStatus.CONFIRMED
