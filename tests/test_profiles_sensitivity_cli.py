@@ -27,7 +27,7 @@ def run(project, capsys, *argv):
     return code, out.out, out.err
 
 
-# ---------------------------------------------------------------------------------- profiles
+# profiles
 
 def test_at_least_three_profiles_with_valid_weights(mk):
     assert len(mk.profiles) >= 3
@@ -91,7 +91,7 @@ def test_missing_and_malformed_profile_files(tmp_path):
         load_profiles(tmp_path / "bad.json")
 
 
-# ------------------------------------------------------------------------------- settings
+# settings
 
 def test_default_settings_without_a_file():
     assert load_settings(None).normaliser == "guarded_minmax"
@@ -119,7 +119,7 @@ def test_missing_settings_file_rejected(tmp_path):
         load_settings(tmp_path / "none.json")
 
 
-# ----------------------------------------------------------------------------- sensitivity
+# sensitivity
 
 def test_sensitivity_runs_every_used_criterion_in_both_directions(mk, settings):
     p = mk.profile("brief")
@@ -148,7 +148,7 @@ def test_normaliser_comparison_lists_every_method(settings):
     assert set(out) == {"guarded_minmax", "minmax", "ratio"}
 
 
-# --------------------------------------------------------------------------------- CLI
+# CLI
 
 def test_rank_command_shows_constraints_ranking_and_explanation(project, capsys):
     code, out, _ = run(project, capsys, "rank")

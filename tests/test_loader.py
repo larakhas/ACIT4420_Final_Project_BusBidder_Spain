@@ -40,7 +40,7 @@ def write_data(tmp_path, rows, header=OFFER_COLUMNS):
     return tmp_path
 
 
-# ---------------------------------------------------------------------------- real dataset
+# real dataset
 
 def test_real_dataset_covers_all_75_combinations(project):
     cat = load_catalogue(project / "data")
@@ -61,7 +61,7 @@ def test_load_is_deterministic(project):
     assert [o.offer_id for o in a.offers] == [o.offer_id for o in b.offers]
 
 
-# -------------------------------------------------------------------------------- valid row
+# valid row
 
 def test_valid_row_is_accepted(refs):
     offer, problems, corrections = check(refs)
@@ -79,7 +79,7 @@ def test_zero_seats_is_valid_data(refs):
     assert problems == [] and offer.seats_available == 0
 
 
-# ------------------------------------------------------------------------------ rejections
+# rejections
 
 @pytest.mark.parametrize("field,value,fragment", [
     ("price_eur", "-5", "price_eur"),
@@ -140,7 +140,7 @@ def test_all_reasons_are_reported_together(refs):
     assert offer is None and len(problems) == 3
 
 
-# ------------------------------------------------------------ regex-validated identifiers
+# regex-validated identifiers
 
 @pytest.mark.parametrize("text", ["SR_AGP_260713_0900_1", "CE_BCN_261231_2359_2"])
 def test_offer_id_pattern_matches_valid(text):
@@ -169,7 +169,7 @@ def test_duplicate_id_rejected(project):
     assert any("duplicate" in r.reasons[0] for r in cat.rejected)
 
 
-# ------------------------------------------------------------------------------ corrections
+# corrections
 
 def test_destination_is_normalised_and_logged(refs):
     offer, problems, corrections = check(refs, destination="  malaga ")
@@ -193,7 +193,7 @@ def test_normalise_name_handles_accents_and_spaces():
     assert normalise_name("SAN   Sebastián") == "san sebastian"
 
 
-# ------------------------------------------------------------------------------ fatal errors
+# fatal errors
 
 def test_missing_file_is_fatal(tmp_path):
     with pytest.raises(DataFileError, match="not found"):

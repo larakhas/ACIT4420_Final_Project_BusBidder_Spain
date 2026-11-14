@@ -10,7 +10,7 @@ from bbspain.request import DepartureWindow
 from tests.conftest import MALAGA, VALENCIA, make_offer, make_request
 
 
-# ------------------------------------------------------------------------------- request
+# request
 
 @pytest.mark.parametrize("field,value", [("passengers", 0), ("passengers", 10), ("passengers", 1.5),
                                          ("max_price", -5), ("max_price", 0), ("max_transfers", -1),
@@ -45,7 +45,7 @@ def test_single_day_window_allowed():
     assert make_request(date_from=date(2026, 7, 12), date_to=date(2026, 7, 12))
 
 
-# --------------------------------------------------------------------- departure windows
+# departure windows
 
 def test_named_windows_parse():
     assert DepartureWindow.parse("morning").start == 360
@@ -90,7 +90,7 @@ def test_night_window_wraps_midnight():
     assert w.gap_min(time(20, 0)) == 120
 
 
-# ------------------------------------------------------------------------- constraints
+# constraints
 
 def kept(offers, **req):
     return apply_hard_constraints(offers, make_request(**req)).accepted
