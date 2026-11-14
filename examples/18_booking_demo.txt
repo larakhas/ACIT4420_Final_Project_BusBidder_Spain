@@ -8,7 +8,7 @@ Showing 1 of 24 acceptable offers (use --top 0 for all).
 $ book --offer CL_AGP_260714_0930_2 --name "Ana Lopez" --passengers 2
 Booking confirmation
 ====================
-  Reference  BB-261114-2ZARTU
+  Reference  BB-261114-HBJ8FW
   Status     CONFIRMED
   Passenger  Ana Lopez (x2)
   Journey    Madrid -> Malaga with CostaLink
@@ -28,12 +28,12 @@ Showing 1 of 24 acceptable offers (use --top 0 for all).
 $ bookings
 Reference         Status     Company    Destination  Departs       Pax    EUR  Name
 ----------------  ---------  ---------  -----------  ------------  ---  -----  ---------
-BB-261114-2ZARTU  CONFIRMED  CostaLink  Malaga       14 Jul 09:30    2  85.80  Ana Lopez
+BB-261114-HBJ8FW  CONFIRMED  CostaLink  Malaga       14 Jul 09:30    2  85.80  Ana Lopez
 
-$ cancel BB-261114-2ZARTU
+$ cancel BB-261114-HBJ8FW
 Booking cancelled
 =================
-  Reference  BB-261114-2ZARTU
+  Reference  BB-261114-HBJ8FW
   Status     CANCELLED
   Passenger  Ana Lopez (x2)
   Journey    Madrid -> Malaga with CostaLink
