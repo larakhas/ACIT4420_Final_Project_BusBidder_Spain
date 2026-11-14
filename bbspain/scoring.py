@@ -249,18 +249,36 @@ class Weights:
 
     @classmethod
     def parse(cls, text: str) -> "Weights":
-        """'price=40,duration=25,departure=15,flexibility=20' (percentages)."""
+        """Read weights written as criterion=percent."""
         import re
+
         mapping = {}
+
         for part in text.split(","):
-            m = re.fullmatch(r"\s*([a-z_]+)\s*=\s*(-?\d+(?:\.\d+)?)\s*", part.casefold())
+            m = re.fullmatch(
+                r"\s*([a-z_]+)\s*=\s*(-?\d+(?:\.\d+)?)\s*",
+                part.casefold(),
+            )
+
             if not m:
-                raise WeightError(f"'{part.strip()}' is not in the form criterion=percent")
+                raise WeightError(
+                    f"'{part.strip()}' is not in the form criterion=percent"
+                )
+
             if m[1] in mapping:
                 raise WeightError(f"Criterion '{m[1]}' is given twice")
-            mapping[m[1]] = float(m[2])
-        return cls.from_mapping(mapping)
 
+            mapping[m[1]] = float(m[2])
+
+        weights = cls.from_mapping(mapping)
+
+        if len(weights.used()) < 4:
+            raise WeightError(
+                "At least four criteria need a weight above zero"
+            )
+
+        return weights
+    
     def percent(self, key: str) -> float:
         return round(self.values[key] * 100, 1)
 

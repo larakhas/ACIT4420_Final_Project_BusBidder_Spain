@@ -70,7 +70,7 @@ def test_profile_file_with_bad_weights_rejected(tmp_path):
 
 def test_profile_file_with_unknown_limit_rejected(tmp_path):
     f = tmp_path / "p.json"
-    f.write_text(json.dumps({"x": {"name": "X", "description": "d", "weights": {"price": 50, "duration": 50},
+    f.write_text(json.dumps({"x": {"name": "X", "description": "d", "weights": {"price": 25, "duration": 25, "departure": 25, "flexibility": 25},
                                    "limits": {"max_pricee": 1}}}))
     with pytest.raises(ConfigError, match="unknown limit"):
         load_profiles(f)
@@ -78,7 +78,7 @@ def test_profile_file_with_unknown_limit_rejected(tmp_path):
 
 def test_profile_file_missing_field_rejected(tmp_path):
     f = tmp_path / "p.json"
-    f.write_text(json.dumps({"x": {"weights": {"price": 50, "duration": 50}}}))
+    f.write_text(json.dumps({"x": {"weights": {"price": 25, "duration": 25, "departure": 25, "flexibility": 25}}}))
     with pytest.raises(ConfigError, match="lacks"):
         load_profiles(f)
 
