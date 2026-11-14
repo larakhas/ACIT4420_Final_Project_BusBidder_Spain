@@ -253,7 +253,7 @@ class Weights:
         import re
         mapping = {}
         for part in text.split(","):
-            m = re.fullmatch(r"\s*([a-z_]+)\s*=\s*(-?\d+(?:\.\d+)?)\s*", part)
+            m = re.fullmatch(r"\s*([a-z_]+)\s*=\s*(-?\d+(?:\.\d+)?)\s*", part.casefold())
             if not m:
                 raise WeightError(f"'{part.strip()}' is not in the form criterion=percent")
             if m[1] in mapping:
