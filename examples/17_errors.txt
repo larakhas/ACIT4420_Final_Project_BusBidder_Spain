@@ -11,6 +11,6 @@ Error: Departure preference 'teatime' is not morning/afternoon/evening/night/any
 (exit status 2)
 
 $ bbspain show BB-123
-Error: 'BB-123' is not a booking reference (expected e.g. BB-260705-K7Q2XM)
+Error: 'BB-123' is not a booking reference (expected e.g. BB-260705-K7Q2XZ)
 (exit status 2)
 
