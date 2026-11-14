@@ -135,7 +135,7 @@ class BookingStore:
         name = validate_name(passenger_name)
         if not 1 <= passengers <= MAX_PASSENGERS:
             raise BookingError(f"Passengers must be between 1 and {MAX_PASSENGERS}")
-                now = self._clock()
+        now = self._clock()
         if offer.departure <= (self._travel_clock() if self._travel_clock else now):
             raise BookingError(f"{offer.offer_id} departed on {offer.departure:%d %b %Y at %H:%M} "
                                "and can no longer be booked")
