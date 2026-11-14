@@ -71,14 +71,14 @@ def test_valid_names(name):
     assert validate_name(name)
 
 
-@pytest.mark.parametrize("name", ["", "   ", "R2D2", "Ana_Lopez", "Ana; DROP TABLE", "x" * 61, "--", "Ana  3"])
+@pytest.mark.parametrize("name", ["", "   ", "R2D2", "Rodrigo_Vidal", "Rodrigo; DROP TABLE", "x" * 61, "--", "Rodrigo  3"])
 def test_invalid_names(name):
     with pytest.raises(BookingError):
         validate_name(name)
 
 
 def test_name_whitespace_is_normalised():
-    assert validate_name(" Lucia    Lopez ") == "Rodrigo Vidal"
+    assert validate_name("  Rodrigo    Vidal ") == "Rodrigo Vidal"
 
 
 # capacity

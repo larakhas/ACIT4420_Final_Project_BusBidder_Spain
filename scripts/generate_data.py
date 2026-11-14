@@ -52,7 +52,7 @@ DESTINATIONS = [
 # Fares: (tier digit, name, changeable, refundable, luggage kg)
 FARES = {
     "SR": [(1, "Saver", False, False, 15), (2, "Plus", True, False, 20)],
-    "CE": [(1, "Standard", True, False, 20), (2, "Premier", True, True, 30)],
+    "CE": [(1, "Standard", True, False, 20), (2, "Value", True, True, 30)],
     "CL": [(1, "Light", False, False, 15), (2, "Flex", True, True, 25)],
     "VB": [(1, "Green", True, False, 20), (2, "Green Flex", True, True, 25)],
     "NV": [(1, "Night", False, False, 15), (2, "Night Plus", True, False, 20)],
@@ -75,21 +75,21 @@ def route_profile(code: str, dest: tuple, rng: random.Random) -> list[dict]:
     """Return one dict per daily departure slot: time, speed, price/km, fixed fee, transfers."""
     _, _, _, coastal, km, major = dest
     if code == "SR":  # cheap, slow, daytime; long routes need a connection
-        transfers = 0 if km < 450 else (1 if km < 600 else 2)
-        return [dict(t=t, speed=66, per_km=0.058, fee=3.5, transfers=transfers) for t in ("07:30", "11:00", "15:30")]
+                transfers = 0 if km < 500 else 1
+                return [dict(t=t, speed=66, per_km=0.048, fee=3.0, transfers=transfers) for t in ("07:30", "11:00", "15:30")] 
     if code == "CE":  # fast and expensive; direct between major cities
         if major:
             return [dict(t=t, speed=96, per_km=0.098, fee=9.0, transfers=0) for t in ("06:45", "12:15", "18:30")]
         return [dict(t=t, speed=80, per_km=0.090, fee=8.0, transfers=1 if km > 350 else 0) for t in ("07:15", "16:00")]
     if code == "CL":
         if coastal:  # strong coastal network: two departures, cheap, direct
-            return [dict(t=t, speed=84, per_km=0.052, fee=4.5, transfers=0) for t in ("09:30", "15:45")]
+            return [dict(t=t, speed=84, per_km=0.058, fee=5.0, transfers=0) for t in ("09:30", "15:45")]
         return [dict(t="11:00", speed=70, per_km=0.074, fee=6.0, transfers=1 if km > 250 else 0)]
     if code == "VB":
-        return [dict(t=t, speed=80, per_km=0.070, fee=6.0, transfers=0 if km < 500 else rng.choice([0, 0, 1]))
+        return [dict(t=t, speed=80, per_km=0.078, fee=7.0, transfers=0 if km < 500 else rng.choice([0, 0, 1]))
                 for t in ("08:15", "14:45")]
     # NV: overnight and late evening, with a long rest stop
-    return [dict(t=t, speed=73, per_km=0.057, fee=4.0, transfers=0 if km < 550 else 1) for t in ("21:30", "23:00")]
+    return [dict(t=t, speed=73, per_km=0.051, fee=3.5, transfers=0) for t in ("21:30", "23:00")]
 
 
 def offer_rows(rng: random.Random) -> list[list]:
@@ -134,7 +134,7 @@ DIRTY_ROWS = [
     # REJECT: impossible calendar date
     ["CL_VLC_260732_1000_1", "CL", "Valencia", "2026-07-32 10:00", "2026-07-32 15:00", 300, "30.00", 0, 15, "Light", "false", "false", 10, 4.0, 20.0],
     # REJECT: arrival before departure
-    ["CE_BCN_260713_1100_2", "CE", "Barcelona", "2026-07-13 11:00", "2026-07-13 09:30", 390, "88.00", 0, 30, "Premier", "true", "true", 10, 4.5, 36.0],
+    ["CE_BCN_260713_1100_2", "CE", "Barcelona", "2026-07-13 11:00", "2026-07-13 09:30", 390, "88.00", 0, 30, "Value", "true", "true", 10, 4.5, 36.0],
     # REJECT: rating outside the 1-5 scale
     ["VB_SVQ_260713_1200_1", "VB", "Seville", "2026-07-13 12:00", "2026-07-13 20:30", 510, "45.00", 0, 20, "Green", "true", "false", 10, 8.2, 19.0],
     # REJECT: missing price
