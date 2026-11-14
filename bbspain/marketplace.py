@@ -35,7 +35,8 @@ class Marketplace:
             write_rejected(catalogue.rejected, root / settings.output_dir / "rejected_offers.csv")
         profiles = load_profiles(root / settings.profiles_file)
         store = BookingStore(root / settings.output_dir / "bookings.json",
-                             cancellation_fee_pct=settings.cancellation_fee_pct)
+                            cancellation_fee_pct=settings.cancellation_fee_pct,
+                            travel_clock=settings.travel_now)
         return cls(settings, catalogue, profiles, store, root)
 
     def profile(self, key: str) -> TravellerProfile:
