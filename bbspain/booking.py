@@ -103,11 +103,63 @@ class BookingStore:
     def _load(self) -> dict[str, Booking]:
         if not self.path.exists():
             return {}
+
         try:
-            data = json.loads(self.path.read_text(encoding="utf-8"))
-            return {b["reference"]: Booking.from_dict(b) for b in data["bookings"]}
-        except (OSError, json.JSONDecodeError, KeyError, TypeError, ValueError) as exc:
-            raise DataFileError(f"Booking file {self.path} is corrupt: {exc}") from exc
+            text = self.path.read_text(encoding="utf-8")
+        except (OSError, UnicodeError) as exc:
+            raise DataFileError(
+                f"Could not read booking file {self.path}: {exc}"
+            ) from exc
+
+        try:
+            payload = json.loads(text)
+            return self._decode_bookings(payload)
+        except (json.JSONDecodeError, KeyError, TypeError, ValueError,
+                InvalidReferenceError) as exc:
+            raise DataFileError(
+                f"Booking file {self.path} is corrupt: {exc}"
+            ) from exc
+
+    @staticmethod
+    def _decode_bookings(payload: object) -> dict[str, Booking]:
+        """Validate stored records before indexing them by reference."""
+        if not isinstance(payload, dict):
+            raise ValueError("Expected a JSON object")
+
+        records = payload.get("bookings")
+        if not isinstance(records, list):
+            raise ValueError("The bookings field must be a list")
+
+        bookings = {}
+
+        for position, record in enumerate(records, start=1):
+            if not isinstance(record, dict):
+                raise ValueError(f"Booking {position} must be an object")
+
+            if not isinstance(record.get("fare"), dict):
+                raise ValueError(
+                    f"Booking {position} must contain fare conditions"
+                )
+
+            reference = record.get("reference")
+            if not isinstance(reference, str):
+                raise ValueError(
+                    f"Booking {position} must have a reference"
+                )
+
+            if parse_reference(reference) != reference:
+                raise ValueError(
+                    f"Booking {position} has a non-canonical reference"
+                )
+
+            if reference in bookings:
+                raise ValueError(
+                    f"Duplicate booking reference: {reference}"
+                )
+
+            bookings[reference] = Booking.from_dict(record)
+
+        return bookings
 
     def _save(self, bookings: dict[str, Booking]) -> None:
         """Write a temporary file and swap it in, so a crash cannot leave a half-written file."""
