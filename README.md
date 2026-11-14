@@ -1,6 +1,6 @@
 # BusBidder Spain
 
-Final project for ACIT4420 Problem-solving with scripting (OsloMet, 2026).
+Final project for ACIT4420 Problem-solving with scripting (OsloMet, Fall 2026).
 
 BusBidder Spain is a fictional marketplace for bus journeys from Madrid to fifteen Spanish
 destinations. A traveller describes a trip, five simulated companies return offers, and the
@@ -89,7 +89,7 @@ Options that apply to all commands are written before the command: `--root <fold
 python -m pytest
 ```
 
-There are 260 tests. They cover normal use, invalid input, missing data and boundary values.
+There are 267 tests. They cover normal use, invalid input, missing data and boundary values.
 
 ## Where the files are
 
