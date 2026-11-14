@@ -178,6 +178,9 @@ sh scripts/make_examples.sh
 
 If `python3` is not available, use `PYTHON=python sh scripts/make_examples.sh`.
 
+The script works on a temporary copy of `config/` and `data/`, so it never changes your own
+bookings or log file.
+
 The ranking results are the same on every run because the dataset comes from a fixed random
 seed and ties are sorted in a fixed order. Only the booking reference in
 `examples/18_booking_demo.txt` changes, because it is random and contains the current date.
