@@ -89,7 +89,7 @@ Options that apply to all commands are written before the command: `--root <fold
 python -m pytest
 ```
 
-There are 271 tests. They cover normal use, invalid input, missing data and boundary values.
+There are 275 tests. They cover normal use, invalid input, missing data and boundary values.
 
 ## Where the files are
 

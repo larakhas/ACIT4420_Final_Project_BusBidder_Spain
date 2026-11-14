@@ -54,12 +54,25 @@ def parse_reference(text: str) -> str:
 
 
 def validate_name(text: str) -> str:
-    name = " ".join(text.split())
-    if not name:
+    """Validate and normalise the passenger name."""
+    if not isinstance(text, str):
+        raise BookingError("Passenger name must be text")
+
+    cleaned_name = " ".join(text.split())
+
+    if cleaned_name == "":
         raise BookingError("Passenger name is required")
-    if len(name) > MAX_NAME_LENGTH or not NAME.match(name):
-        raise BookingError(f"'{text}' is not a valid passenger name (letters, spaces, hyphens, apostrophes)")
-    return name
+
+    correct_length = len(cleaned_name) <= MAX_NAME_LENGTH
+    correct_format = NAME.fullmatch(cleaned_name) is not None
+
+    if not correct_length or not correct_format:
+        raise BookingError(
+            f"'{text}' is not a valid passenger name "
+            "(letters, spaces, hyphens, apostrophes)"
+        )
+
+    return cleaned_name
 
 def booking_write(func):
     """Protect booking changes and reload the latest saved bookings."""
@@ -173,24 +186,44 @@ class BookingStore:
             raise BookingError(f"Could not save bookings to {self.path}: {exc}") from exc
 
     #capacity
+    def _reserved_capacity(self) -> Counter:
+        """Count reserved seats for each offer from confirmed bookings."""
+        reserved = Counter()
+
+        for booking in self._bookings.values():
+            if booking.status is BookingStatus.CONFIRMED:
+                reserved[booking.offer_id] += booking.passengers
+
+        return reserved
 
     def seats_booked(self, offer_id: str) -> int:
-        return sum(b.passengers for b in self._bookings.values()
-                   if b.offer_id == offer_id and b.status is BookingStatus.CONFIRMED)
+        reserved = self._reserved_capacity()
+        return reserved[offer_id]
 
     def seats_left(self, offer: Offer) -> int:
         """`offer` must carry the original seat count from the data file."""
         return max(0, offer.seats_available - self.seats_booked(offer.offer_id))
 
     def apply_inventory(self, offers: Sequence[Offer]) -> list[Offer]:
-        """Copies of the offers with already-booked seats subtracted (used before every search)."""
+        """Return offers with capacity adjusted for saved bookings."""
         self._bookings = self._load()
-        booked = Counter()
-        for b in self._bookings.values():
-            if b.status is BookingStatus.CONFIRMED:
-                booked[b.offer_id] += b.passengers
-        return [o.with_seats(max(0, o.seats_available - booked[o.offer_id])) if booked[o.offer_id] else o
-                for o in offers]
+        reserved = self._reserved_capacity()
+        available_offers = []
+
+        for offer in offers:
+            reserved_seats = reserved[offer.offer_id]
+
+            if reserved_seats == 0:
+                available_offers.append(offer)
+                continue
+
+            remaining_seats = max(
+                0,
+                offer.seats_available - reserved_seats,
+            )
+            available_offers.append(offer.with_seats(remaining_seats))
+
+        return available_offers
 
     # operations
 

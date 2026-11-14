@@ -50,3 +50,12 @@ def test_two_instances_preserve_bookings_and_capacity(tmp_path):
     with pytest.raises(SeatsUnavailableError):
         first.book(offer, "Charlie Smith")
         
+
+@pytest.mark.parametrize("value", [None, 123, [], {}])
+def test_passenger_name_requires_text(value):
+    from bbspain.booking import validate_name
+    from bbspain.errors import BookingError
+
+    with pytest.raises(BookingError, match="must be text"):
+        validate_name(value)
+        
