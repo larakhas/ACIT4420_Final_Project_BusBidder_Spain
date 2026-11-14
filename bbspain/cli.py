@@ -264,7 +264,7 @@ def main(argv: list[str] | None = None) -> int:
     except BusBidderError as exc:
         print(f"Error: {exc}", file=sys.stderr)
         return EXIT_USER_ERROR
-    except KeyboardInterrupt:
+    except (KeyboardInterrupt, EOFError):
         print("\nBye.")
         return 0
 
