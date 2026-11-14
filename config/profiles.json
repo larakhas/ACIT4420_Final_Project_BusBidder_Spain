@@ -8,9 +8,9 @@
   },
   "budget": {
     "name": "Budget traveller",
-    "description": "Cost matters most and the traveller will accept a slow journey with a connection, but not more than two transfers.",
-    "weights": {"price": 60, "duration": 15, "flexibility": 5, "transfers": 20},
-    "departure": "any",
+    "description": "Cost matters most. Afternoon departures are slightly preferred, and up to two transfers are acceptable.",
+    "weights": {"price": 55, "duration": 15, "departure": 5, "flexibility": 5, "transfers": 20},
+    "departure": "afternoon",
     "limits": {"max_transfers": 2}
   },
   "business": {
@@ -29,9 +29,9 @@
   },
   "eco": {
     "name": "Environment-focused traveller",
-    "description": "Wants the lowest emissions and fewer transfers; will pay somewhat more.",
-    "weights": {"price": 15, "duration": 10, "flexibility": 10, "transfers": 10, "emissions": 40, "rating": 15},
-    "departure": "any",
+    "description": "Emissions matter most. Morning departures are slightly preferred, and at most one transfer is acceptable.",
+    "weights": {"price": 15, "duration": 10, "departure": 5, "flexibility": 10, "transfers": 10, "emissions": 35, "rating": 15},
+    "departure": "morning",
     "limits": {"max_transfers": 1}
   }
 }

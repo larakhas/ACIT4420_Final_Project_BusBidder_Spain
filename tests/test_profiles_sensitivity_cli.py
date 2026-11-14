@@ -294,3 +294,19 @@ def test_real_clock_refuses_the_july_2026_dataset(project):
     market = Marketplace.open(settings, project)
     with pytest.raises(BookingError, match="departed"):
         market.book(market.catalogue.offers[0].offer_id, "Rodrigo Vidal", 1)
+    
+@pytest.mark.parametrize("text", [
+    "price=40,duration=25,flexibility=20,rating=15",
+    "price=40,duration=25,departure=0,flexibility=20,rating=15",
+])
+def test_custom_weights_require_all_core_criteria(text):
+    from bbspain.errors import WeightError
+
+    with pytest.raises(WeightError, match="positive weights"):
+        Weights.parse(text)
+
+
+def test_every_profile_uses_all_core_criteria(mk):
+    for profile in mk.profiles.values():
+        for key in ("price", "duration", "departure", "flexibility"):
+            assert profile.weights.values[key] > 0

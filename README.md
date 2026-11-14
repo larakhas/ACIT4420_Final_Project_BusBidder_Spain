@@ -89,7 +89,7 @@ Options that apply to all commands are written before the command: `--root <fold
 python -m pytest
 ```
 
-There are 275 tests. They cover normal use, invalid input, missing data and boundary values.
+There are 278 tests. They cover normal use, invalid input, missing data and boundary values.
 
 ## Where the files are
 
@@ -187,3 +187,21 @@ To recreate the dataset itself:
 ```
 python scripts/generate_data.py
 ```
+## Ranking requirements
+
+Custom search weights and traveller profiles must assign positive weights to
+price, duration, departure-time convenience and ticket flexibility. Additional
+criteria are optional. All weights must total 100% or 1.0.
+
+## Booking storage and locking
+
+Booking and cancellation operations acquire an exclusive local lock before
+reloading the booking file, checking the relevant conditions and saving changes.
+Other writers receive a clear message asking them to retry.
+
+With the default settings, the lock directory is output/bookings.json.lock.
+An interrupted process may leave this directory behind. Remove it manually only
+after confirming that no booking process is running.
+
+The booking loader checks the stored structure and rejects duplicate references.
+Confirmed bookings are used to calculate reserved capacity in one shared method.

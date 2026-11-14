@@ -8,7 +8,7 @@ Showing 1 of 19 acceptable offers (use --top 0 for all).
 $ book --offer SR_AGP_260714_0730_2 --name "Rodrigo Vidal" --passengers 2
 Booking confirmation
 ====================
-  Reference  BB-261114-K2VV59
+  Reference  BB-261114-LA2FNW
   Status     CONFIRMED
   Passenger  Rodrigo Vidal (x2)
   Journey    Madrid -> Malaga with SolRuta
@@ -28,12 +28,12 @@ Showing 1 of 19 acceptable offers (use --top 0 for all).
 $ bookings
 Reference         Status     Company  Destination  Departs       Pax    EUR  Name
 ----------------  ---------  -------  -----------  ------------  ---  -----  -------------
-BB-261114-K2VV59  CONFIRMED  SolRuta  Malaga       14 Jul 07:30    2  67.28  Rodrigo Vidal
+BB-261114-LA2FNW  CONFIRMED  SolRuta  Malaga       14 Jul 07:30    2  67.28  Rodrigo Vidal
 
-$ cancel BB-261114-K2VV59
+$ cancel BB-261114-LA2FNW
 Booking cancelled
 =================
-  Reference  BB-261114-K2VV59
+  Reference  BB-261114-LA2FNW
   Status     CANCELLED
   Passenger  Rodrigo Vidal (x2)
   Journey    Madrid -> Malaga with SolRuta

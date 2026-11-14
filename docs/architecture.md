@@ -67,7 +67,7 @@ flowchart TD
     F --> G["Total = sum of<br/>weight x score"]
     G --> H["Sort: total, then price,<br/>departure, offer id"]
     H --> I["Explanation of #1,<br/>warnings"]
-    I --> J["Optional booking:<br/>re-check seats and departure time, save"]
+    I --> J["Optional booking:<br/>lock and reload bookings<br/>check seats and departure, save<br/>release lock"]
 ```
 
 ## Module responsibilities
@@ -88,3 +88,26 @@ flowchart TD
 | `display.py` | Text formatting only | `render_*`, `table` |
 | `cli.py` | Commands and interactive mode | `main`, `cmd_interactive` |
 | `config.py`, `logging_setup.py` | Settings and log file | `Settings`, `configure_logging` |
+
+## Booking validation and capacity
+
+BookingStore separates file access from validation. The _load method reads the
+file and handles expected loading errors. The _decode_bookings static method
+checks the record structure and booking references, rejects duplicate references
+and reconstructs Booking objects.
+
+The _reserved_capacity method counts passengers in confirmed bookings.
+Both seats_booked and apply_inventory use this calculation. Cancelled bookings
+do not reserve seats, and the original catalogue capacity remains unchanged.
+
+The booking_write decorator acquires an exclusive local lock and reloads saved
+bookings before booking or cancellation. The lock is released in a finally block.
+This supports cooperating local processes; it is not a distributed transaction
+system.
+
+## Validation of ranking weights
+
+The Weights.require_core method checks that price, duration, departure and
+flexibility all have positive weights. Custom search parsing and profile loading
+use this shared rule. Lower-level scoring tests and sensitivity experiments can
+still construct reduced or boundary scenarios.

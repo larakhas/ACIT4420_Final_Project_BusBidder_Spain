@@ -1,25 +1,25 @@
 1. Winning company per profile (15 destinations each)
 ------------------------------------------------------------
   Brief example traveller          SolRuta 13, CostaLink 2
-  Budget traveller                 SolRuta 7, CostaLink 6, NocheVia 2
+  Budget traveller                 SolRuta 7, CostaLink 6, NocheVia 1, VerdeBus 1
   Business traveller               Camino Express 6, VerdeBus 6, CostaLink 3
   Flexibility-focused tourist      VerdeBus 9, CostaLink 6
   Environment-focused traveller    VerdeBus 15
-  ALL (75 searches)                VerdeBus 30, SolRuta 20, CostaLink 17, Camino Express 6, NocheVia 2
+  ALL (75 searches)                VerdeBus 31, SolRuta 20, CostaLink 17, Camino Express 6, NocheVia 1
   Searches with no acceptable offer: 0.  Companies never recommended: none
 
 2. Winner under each normalisation method (75 searches)
 ------------------------------------------------------------
   guarded_minmax  winner differs from guarded_minmax in 0 of 75 searches
   minmax          winner differs from guarded_minmax in 0 of 75 searches
-  ratio           winner differs from guarded_minmax in 25 of 75 searches
+  ratio           winner differs from guarded_minmax in 28 of 75 searches
   The guard is active in 5 of 165 relative-criterion normalisations
   guarded_minmax and minmax give a different top-5 order in 3 of 75 searches
 
 3. Weight sensitivity (+/-10 points on each used weight, 75 searches)
 ------------------------------------------------------------
-  156 of 705 weight shifts change the winner (22.1%)
-  60 of 75 searches have at least one shift that changes the winner
+  151 of 735 weight shifts change the winner (20.5%)
+  56 of 75 searches have at least one shift that changes the winner
 
 4. Missing data among winners
 ------------------------------------------------------------

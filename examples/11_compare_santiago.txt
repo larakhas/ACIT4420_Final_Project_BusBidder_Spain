@@ -4,7 +4,7 @@ Every profile starts from the same 60 offers on this route and dates.
 Profile                        Acceptable  Recommended           Company     EUR  Length  Departs    Fare           Score
 -----------------------------  ----------  --------------------  --------  -----  ------  ---------  -------------  -----
 Brief example traveller                15  SR_SCQ_260714_1100_2  SolRuta   37.34  9h41    Tue 11:00  Plus C-        82.07
-Budget traveller                       60  NV_SCQ_260713_2145_1  NocheVia  34.14  9h17    Mon 21:45  Night --       83.72
+Budget traveller                       60  NV_SCQ_260713_2145_1  NocheVia  34.14  9h17    Mon 21:45  Night --       78.94
 Business traveller                      4  VB_SCQ_260714_0815_1  VerdeBus  59.64  7h42    Tue 08:15  Green C-       91.84
 Flexibility-focused tourist            42  VB_SCQ_260713_0815_2  VerdeBus  74.25  7h52    Mon 08:15  Green Flex CR  86.23
-Environment-focused traveller          60  VB_SCQ_260713_0815_2  VerdeBus  74.25  7h52    Mon 08:15  Green Flex CR  87.44
+Environment-focused traveller          60  VB_SCQ_260713_0815_2  VerdeBus  74.25  7h52    Mon 08:15  Green Flex CR  87.64

@@ -4,8 +4,8 @@ brief     Brief example traveller
           hard limits: max_price=50, max_transfers=1, require_changeable=True
 
 budget    Budget traveller
-          Cost matters most and the traveller will accept a slow journey with a connection, but not more than two transfers.
-          weights: price 60%, duration 15%, flexibility 5%, transfers 20%
+          Cost matters most. Afternoon departures are slightly preferred, and up to two transfers are acceptable.
+          weights: price 55%, duration 15%, departure time 5%, flexibility 5%, transfers 20%
           hard limits: max_transfers=2
 
 business  Business traveller
@@ -19,7 +19,7 @@ tourist   Flexibility-focused tourist
           hard limits: require_changeable=True, min_luggage_kg=20
 
 eco       Environment-focused traveller
-          Wants the lowest emissions and fewer transfers; will pay somewhat more.
-          weights: price 15%, duration 10%, flexibility 10%, transfers 10%, rating 15%, CO2 emissions 40%
+          Emissions matter most. Morning departures are slightly preferred, and at most one transfer is acceptable.
+          weights: price 15%, duration 10%, departure time 5%, flexibility 10%, transfers 10%, rating 15%, CO2 emissions 35%
           hard limits: max_transfers=1
 

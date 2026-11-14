@@ -49,10 +49,7 @@ def load_profiles(path: Path) -> dict[str, TravellerProfile]:
     for key, entry in raw.items():
         try:
             weights = Weights.from_mapping(entry["weights"])
-            if len(weights.used()) < 4:
-                raise WeightError(
-                    "At least four criteria need a weight above zero"
-                )
+            weights.require_core()
             limits = dict(entry.get("limits", {}))
             bad = sorted(set(limits) - _ALLOWED_LIMITS)
             if bad:

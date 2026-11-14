@@ -271,12 +271,7 @@ class Weights:
             mapping[m[1]] = float(m[2])
 
         weights = cls.from_mapping(mapping)
-
-        if len(weights.used()) < 4:
-            raise WeightError(
-                "At least four criteria need a weight above zero"
-            )
-
+        weights.require_core()
         return weights
     
     def percent(self, key: str) -> float:
@@ -284,6 +279,18 @@ class Weights:
 
     def used(self) -> list[str]:
         return [k for k, v in self.values.items() if v > 0]
+    
+    def require_core(self) -> None:
+        missing = [
+            key for key in CORE_CRITERIA
+            if self.values.get(key, 0) <= 0
+        ]
+
+        if missing:
+            raise WeightError(
+                "Price, duration, departure and flexibility must all have "
+                "positive weights. Missing or zero: " + ", ".join(missing)
+            )
 
     def describe(self) -> str:
         return ", ".join(f"{lower_label(k)} {self.values[k] * 100:g}%" for k in self.used())
