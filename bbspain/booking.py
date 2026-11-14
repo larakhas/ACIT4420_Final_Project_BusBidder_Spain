@@ -6,7 +6,7 @@ count. If someone cancels, their seats become available again. That way, I only
 have one seat count to maintain. Payment status is simulated, and I don't
 collect any payment details.
 
-A booking reference looks like BB-260705-K7Q2XM. After the date, there are six
+A booking reference looks like BB-260705-K7Q2XZ. After the date, there are six
 characters. I leave out I, O, 0 and 1 because they're easy to mix up. The last
 character is calculated from the others, so I can check for typos before looking
 up the booking.
@@ -37,17 +37,22 @@ MAX_NAME_LENGTH = 60
 
 
 def check_char(date_part: str, body: str) -> str:
-    """Weighted sum of the symbols, modulo 32; catches single-character typos and most swaps."""
-    text = date_part + body
-    total = sum((i + 1) * (ALPHABET.index(c) if c in ALPHABET else int(c)) for i, c in enumerate(text))
-    return ALPHABET[total % 32]
+            """Weighted sum of the symbols, modulo 32.
 
+    The weights are the odd numbers 1, 3, 5, ... An odd number shares no factor with 32, so
+    changing any single character always changes the sum and is always detected. (Weights
+    1, 2, 3, ... would not do: an even weight times a difference of 16 is a multiple of 32.)
+    Swapping two neighbouring characters is caught unless their values differ by exactly 16.
+    """
+text = date_part + body
+total = sum((2 * i + 1) * (ALPHABET.index(c) if c in ALPHABET else int(c)) for i, c in enumerate(text))
+    
 
 def parse_reference(text: str) -> str:
     ref = text.strip().upper()
     m = REFERENCE.match(ref)
     if not m:
-        raise InvalidReferenceError(f"'{text}' is not a booking reference (expected e.g. BB-260705-K7Q2XM)")
+        raise InvalidReferenceError(f"'{text}' is not a booking reference (expected e.g. BB-260705-K7Q2XZ)")
     if check_char(m["date"], m["body"]) != m["check"]:
         raise InvalidReferenceError(f"'{text}' has a wrong check character; was it mistyped?")
     return ref
@@ -71,7 +76,7 @@ class BookingStore:
         self._clock = clock
         self._bookings: dict[str, Booking] = self._load()
 
-    # --------------------------------------------------------------------- file handling
+    # file handling
 
     def _load(self) -> dict[str, Booking]:
         if not self.path.exists():
@@ -93,7 +98,7 @@ class BookingStore:
         except OSError as exc:
             raise BookingError(f"Could not save bookings to {self.path}: {exc}") from exc
 
-    # ------------------------------------------------------------------------- capacity
+    #capacity
 
     def seats_booked(self, offer_id: str) -> int:
         return sum(b.passengers for b in self._bookings.values()
@@ -112,7 +117,7 @@ class BookingStore:
         return [o.with_seats(max(0, o.seats_available - booked[o.offer_id])) if booked[o.offer_id] else o
                 for o in offers]
 
-    # ------------------------------------------------------------------------ operations
+    # operations
 
     def _new_reference(self, when: datetime) -> str:
         date_part = f"{when:%y%m%d}"
