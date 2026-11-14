@@ -4,11 +4,12 @@ from __future__ import annotations
 
 import json
 from dataclasses import dataclass, fields
+from datetime import datetime
 from pathlib import Path
 
 from bbspain.errors import ConfigError
 
-
+SIMULATED_NOW_FORMAT = "%Y-%m-%d %H:%M"
 @dataclass(frozen=True)
 class Settings:
     normaliser: str = "guarded_minmax"      # guarded_minmax | minmax | ratio
@@ -17,12 +18,18 @@ class Settings:
     neutral_score: float = 50.0             # score given to a missing optional value
     dominance_warning: float = 0.50         # warn when one weight exceeds this share
     cancellation_fee_pct: float = 10.0      # fee kept on a refundable cancellation
+    simulated_now: str | None = "2026-07-05 12:00"
     default_date_from: str = "2026-07-12"
     default_date_to: str = "2026-07-14"
     data_dir: str = "data"
     output_dir: str = "output"
     log_file: str = "logs/busbidder.log"
     profiles_file: str = "config/profiles.json"
+    
+    def travel_now(self) -> datetime:
+        if self.simulated_now is None:
+            return datetime.now()
+        return datetime.strptime(self.simulated_now, SIMULATED_NOW_FORMAT)
 
 
 def load_settings(path: Path | None) -> Settings:
@@ -61,3 +68,10 @@ def _check(s: Settings) -> None:
         raise ConfigError("dominance_warning must be in (0, 1]")
     if not 0 <= s.cancellation_fee_pct <= 100:
         raise ConfigError("cancellation_fee_pct must be between 0 and 100")
+
+    if s.simulated_now is not None:
+        try:
+            datetime.strptime(s.simulated_now, SIMULATED_NOW_FORMAT)
+        except (TypeError, ValueError):
+            raise ConfigError(f"simulated_now must be null or a date and time like 2026-07-05 12:00 "
+                              f"(got {s.simulated_now!r})") from None
