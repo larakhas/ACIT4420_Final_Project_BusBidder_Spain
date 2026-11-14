@@ -37,16 +37,10 @@ MAX_NAME_LENGTH = 60
 
 
 def check_char(date_part: str, body: str) -> str:
-            """Weighted sum of the symbols, modulo 32.
-
-    The weights are the odd numbers 1, 3, 5, ... An odd number shares no factor with 32, so
-    changing any single character always changes the sum and is always detected. (Weights
-    1, 2, 3, ... would not do: an even weight times a difference of 16 is a multiple of 32.)
-    Swapping two neighbouring characters is caught unless their values differ by exactly 16.
-    """
-text = date_part + body
-total = sum((2 * i + 1) * (ALPHABET.index(c) if c in ALPHABET else int(c)) for i, c in enumerate(text))
-    
+    """Weighted sum of the symbols, modulo 32, with odd weights so every single typo is caught."""
+    text = date_part + body
+    total = sum((2 * i + 1) * (ALPHABET.index(c) if c in ALPHABET else int(c)) for i, c in enumerate(text))
+    return ALPHABET[total % 32]
 
 def parse_reference(text: str) -> str:
     ref = text.strip().upper()
