@@ -20,7 +20,7 @@ def rank(offers, weights=CORE, settings=None, **req):
     return Ranker(settings or Settings()).rank(offers, make_request(**req), weights)
 
 
-# ------------------------------------------------------------------------- normalisers
+# normalisers
 
 def test_at_least_four_criteria_are_registered():
     assert {"price", "duration", "departure", "flexibility"} <= set(CRITERIA)
@@ -76,7 +76,7 @@ def test_one_extreme_outlier_does_not_collapse_the_others(settings):
     assert mm[2] > 98.0                                                      # min-max squashes them together
 
 
-# --------------------------------------------------------------------------------- weights
+# weights
 
 def test_percent_and_fraction_weights_are_equivalent():
     a = Weights.from_mapping({"price": 60, "duration": 40})
@@ -119,7 +119,7 @@ def test_shift_outside_0_to_100_is_impossible():
     assert CORE.shifted("price", +70) is None and CORE.shifted("price", -50) is None
 
 
-# -------------------------------------------------------------------- criteria and totals
+# criteria and totals
 
 def test_total_is_weighted_sum_of_criterion_scores():
     offers = [make_offer("a", price=40, minutes=300, changeable=True, refundable=True),
@@ -174,7 +174,7 @@ def test_unused_criteria_do_not_change_the_total():
     assert res.ranked[0].total == res.ranked[1].total
 
 
-# ------------------------------------------------------------- missing values and ties
+# missing values and ties
 
 def test_missing_value_gets_neutral_score_and_is_flagged():
     w = Weights.from_mapping({"price": 50, "rating": 50})
@@ -255,7 +255,7 @@ def test_registering_duplicate_criterion_fails():
                   show=lambda o, r: "", describe=lambda o, r, c: "")(lambda o, r: 1.0)
 
 
-# ---------------------------------------------------------------------------- explanation
+# explanation
 
 def test_explanation_names_strengths_and_disadvantages():
     best = make_offer("best", price=48, minutes=300, changeable=True, refundable=True)
@@ -284,7 +284,7 @@ def test_explanation_flags_missing_data():
     assert any(line.startswith("?") for line in explain(res))
 
 
-# ------------------------------------------------------------ later refinements (found while reviewing output)
+# later refinements (found while reviewing output)
 
 def test_explanation_does_not_praise_departure_when_no_preference_was_set():
     res = rank([make_offer("a", price=30)])             # CORE weights include departure, request has no window
@@ -307,3 +307,8 @@ def test_registering_duplicate_normaliser_fails():
     from bbspain.scoring import normaliser
     with pytest.raises(ValueError, match="already registered"):
         normaliser("ratio")(lambda values, lower, settings: values)
+
+
+def test_weights_parse_ignores_capitalisation():
+    w = Weights.parse("Price=40, DURATION=25,departure=15,Flexibility=20")
+    assert w.percent("price") == 40 and w.percent("duration") == 25
