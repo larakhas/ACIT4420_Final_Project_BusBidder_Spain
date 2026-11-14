@@ -3,8 +3,9 @@
 from __future__ import annotations
 
 import json
+import math
 from dataclasses import dataclass, fields
-from datetime import datetime
+from datetime import date, datetime
 from pathlib import Path
 
 from bbspain.errors import ConfigError
@@ -56,6 +57,37 @@ def load_settings(path: Path | None) -> Settings:
 
 def _check(s: Settings) -> None:
     from bbspain.scoring import NORMALISERS
+
+    numeric_settings = (
+        "min_span_fraction",
+        "departure_tolerance_min",
+        "neutral_score",
+        "dominance_warning",
+        "cancellation_fee_pct",
+    )
+
+    for key in numeric_settings:
+        value = getattr(s, key)
+
+        if isinstance(value, bool) or not isinstance(value, (int, float)):
+            raise ConfigError(f"{key} must be a number (got {value!r})")
+
+        if not math.isfinite(value):
+            raise ConfigError(f"{key} must be finite (got {value!r})")
+        
+    try:
+        start = date.fromisoformat(s.default_date_from)
+        end = date.fromisoformat(s.default_date_to)
+    except (TypeError, ValueError):
+        raise ConfigError(
+            "Default travel dates must be valid YYYY-MM-DD strings"
+        ) from None
+
+    if end < start:
+        raise ConfigError(
+            "Default travel window ends before it starts"
+        )
+
     if s.normaliser not in NORMALISERS:
         raise ConfigError(f"Unknown normaliser '{s.normaliser}'. Available: {', '.join(sorted(NORMALISERS))}")
     if not 0 < s.min_span_fraction <= 1:

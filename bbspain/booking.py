@@ -22,6 +22,7 @@ from collections import Counter
 from datetime import datetime
 from pathlib import Path
 from typing import Callable, Sequence
+from functools import wraps
 
 from bbspain.errors import (BookingError, BookingNotFoundError, DataFileError, InvalidReferenceError,
                             SeatsUnavailableError)
@@ -60,6 +61,31 @@ def validate_name(text: str) -> str:
         raise BookingError(f"'{text}' is not a valid passenger name (letters, spaces, hyphens, apostrophes)")
     return name
 
+def booking_write(func):
+    """Protect booking changes and reload the latest saved bookings."""
+    @wraps(func)
+    def wrapped(self, *args, **kwargs):
+        lock = self.path.with_suffix(self.path.suffix + ".lock")
+
+        try:
+            self.path.parent.mkdir(parents=True, exist_ok=True)
+            lock.mkdir()
+        except FileExistsError:
+            raise BookingError(
+                "Booking file is busy. Please try again."
+            ) from None
+        except OSError as exc:
+            raise BookingError(
+                f"Could not lock booking file: {exc}"
+            ) from exc
+
+        try:
+            self._bookings = self._load()
+            return func(self, *args, **kwargs)
+        finally:
+            lock.rmdir()
+
+    return wrapped
 
 class BookingStore:
     def __init__(self, path: Path, *, cancellation_fee_pct: float = 10.0, rng: random.Random | None = None,
@@ -106,6 +132,7 @@ class BookingStore:
 
     def apply_inventory(self, offers: Sequence[Offer]) -> list[Offer]:
         """Copies of the offers with already-booked seats subtracted (used before every search)."""
+        self._bookings = self._load()
         booked = Counter()
         for b in self._bookings.values():
             if b.status is BookingStatus.CONFIRMED:
@@ -123,7 +150,8 @@ class BookingStore:
             if ref not in self._bookings:
                 return ref
         raise BookingError("Could not generate a unique booking reference")
-
+    
+    @booking_write
     def book(self, offer: Offer, passenger_name: str, passengers: int = 1, profile: str | None = None) -> Booking:
         """`offer` must be the original catalogue offer (not one already reduced by apply_inventory)."""
         name = validate_name(passenger_name)
@@ -151,12 +179,14 @@ class BookingStore:
         return booking
 
     def get(self, reference: str) -> Booking:
+        self._bookings = self._load()
         ref = parse_reference(reference)
         try:
             return self._bookings[ref]
         except KeyError:
             raise BookingNotFoundError(f"No booking with reference {ref}") from None
-
+        
+    @booking_write
     def cancel(self, reference: str) -> Booking:
         """Cancel a booking. Refundable fares get the price back minus the cancellation fee."""
         from dataclasses import replace
@@ -174,4 +204,5 @@ class BookingStore:
         return cancelled
 
     def all(self) -> list[Booking]:
+        self._bookings = self._load()
         return sorted(self._bookings.values(), key=lambda b: b.created_at)

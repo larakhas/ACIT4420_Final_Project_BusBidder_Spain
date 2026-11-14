@@ -23,9 +23,11 @@ import csv
 import logging
 import re
 import unicodedata
+import math
 from dataclasses import dataclass, field
 from datetime import datetime
 from pathlib import Path
+
 
 from bbspain.errors import DataFileError
 from bbspain.models import Company, Destination, FareConditions, Offer
@@ -167,7 +169,10 @@ def _parse_number(text: str, label: str, problems: list[str], *, integer: bool =
             problems.append(f"{label}: missing value")
         return None
     try:
-        return int(text) if integer else float(text)
+        value = int(text) if integer else float(text)
+        if not integer and not math.isfinite(value):
+            raise ValueError("Value must be finite")
+        return value
     except ValueError:
         kind = "a whole number" if integer else "a number"
         problems.append(f"{label}: '{text}' is not {kind}")

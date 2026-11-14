@@ -1,6 +1,3 @@
-
-
-
 """Rank offers using the traveller's weights.
 
 I give each criterion a score from 0 to 100, with 100 as the best score.
@@ -20,8 +17,8 @@ I register each normaliser and criterion by name using decorators. The settings,
 profiles, weight validator and CLI can then look them up without having to
 maintain separate lists.
 """
-
 from __future__ import annotations
+import math
 
 from dataclasses import dataclass, field
 from typing import Callable, Sequence
@@ -32,7 +29,7 @@ from bbspain.errors import WeightError
 from bbspain.models import Offer
 from bbspain.request import TravelRequest
 
-# --------------------------------------------------------------------------- normalisers
+# normalisers
 
 Normaliser = Callable[[Sequence[float], bool, Settings], "list[float]"]
 NORMALISERS: dict[str, Normaliser] = {}
@@ -83,7 +80,7 @@ def ratio(values, lower_is_better, settings):
     return [100.0 * best / v if lower_is_better else 100.0 * v / best for v in values]
 
 
-# ----------------------------------------------------------------------------- criteria
+# criteria
 
 def lower_label(key: str) -> str:
     """'Price' -> 'price', but keep acronyms: 'CO2 emissions' stays as it is."""
@@ -209,7 +206,7 @@ def emissions(offer, request):
     return offer.co2_kg
 
 
-# ------------------------------------------------------------------------------- weights
+#  weights
 
 @dataclass(frozen=True)
 class Weights:
@@ -232,6 +229,9 @@ class Weights:
         for key, w in mapping.items():
             if isinstance(w, bool) or not isinstance(w, (int, float)):
                 raise WeightError(f"Weight for {key} must be a number (got {w!r})")
+            if not math.isfinite(w):
+                raise WeightError(f"Weight for {key} must be finite")
+
             if w < 0:
                 raise WeightError(f"Weight for {key} cannot be negative (got {w})")
         total = sum(mapping.values())
@@ -285,7 +285,7 @@ class Weights:
         return Weights(values)
 
 
-# ------------------------------------------------------------------------------- ranking
+# ranking
 
 @dataclass
 class ScoredOffer:
