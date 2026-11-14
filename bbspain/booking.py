@@ -69,11 +69,13 @@ def validate_name(text: str) -> str:
 
 class BookingStore:
     def __init__(self, path: Path, *, cancellation_fee_pct: float = 10.0, rng: random.Random | None = None,
-                 clock: Callable[[], datetime] = datetime.now):
+                clock: Callable[[], datetime] = datetime.now,
+                travel_clock: Callable[[], datetime] | None = None):
         self.path = Path(path)
         self.fee_pct = cancellation_fee_pct
         self._rng = rng or random.SystemRandom()
         self._clock = clock
+        self._travel_clock = travel_clock
         self._bookings: dict[str, Booking] = self._load()
 
     # file handling
@@ -133,10 +135,14 @@ class BookingStore:
         name = validate_name(passenger_name)
         if not 1 <= passengers <= MAX_PASSENGERS:
             raise BookingError(f"Passengers must be between 1 and {MAX_PASSENGERS}")
+                now = self._clock()
+        if offer.departure <= (self._travel_clock() if self._travel_clock else now):
+            raise BookingError(f"{offer.offer_id} departed on {offer.departure:%d %b %Y at %H:%M} "
+                               "and can no longer be booked")
         left = self.seats_left(offer)
         if left < passengers:          # confirm seats again at the moment of booking
             raise SeatsUnavailableError(f"{offer.offer_id} has {left} seat(s) left; {passengers} requested")
-        now = self._clock()
+        
         booking = Booking(
             reference=self._new_reference(now), offer_id=offer.offer_id, company=offer.company.name,
             destination=offer.destination.name, departure=offer.departure, arrival=offer.arrival,
