@@ -23,13 +23,13 @@ def store(tmp_path):
 # references
 
 def test_reference_has_expected_format_and_valid_check(store):
-    b = store.book(make_offer(), "Ana Lopez")
+    b = store.book(make_offer(), "Rodrigo Vidal")
     assert REFERENCE.match(b.reference)
     assert parse_reference(b.reference) == b.reference
 
 
 def test_references_are_unique(store):
-    refs = {store.book(make_offer(seats=50), "Ana Lopez").reference for _ in range(40)}
+    refs = {store.book(make_offer(seats=50), "Rodrigo Vidal").reference for _ in range(40)}
     assert len(refs) == 40
 
 
@@ -38,7 +38,7 @@ def test_reference_alphabet_has_no_lookalikes():
 
 
 def test_reference_lookup_ignores_case_and_spaces(store):
-    b = store.book(make_offer(), "Ana Lopez")
+    b = store.book(make_offer(), "Rodrigo Vidal")
     assert store.get("  " + b.reference.lower() + " ").reference == b.reference
 
 
@@ -50,7 +50,7 @@ def test_malformed_reference_rejected(text):
 
 
 def test_mistyped_reference_fails_check_character(store):
-    ref = store.book(make_offer(), "Ana Lopez").reference
+    ref = store.book(make_offer(), "Rodrigo Vidal").reference
     body = ref[10:15]
     wrong = ref[:10] + ("A" if body[0] != "A" else "B") + body[1:] + ref[-1]
     with pytest.raises(InvalidReferenceError, match="check character"):
@@ -66,7 +66,7 @@ def test_well_formed_unknown_reference_not_found(store):
 
 # passenger
 
-@pytest.mark.parametrize("name", ["Ana Lopez", "José María", "O'Brien", "Anne-Marie Dupont", "Åse Nilsen"])
+@pytest.mark.parametrize("name", ["Rodrigo Vidal", "Iñaki Muñoz", "D'Angelo", "Maria-Jose Castro", "Øyvind Sæther"])
 def test_valid_names(name):
     assert validate_name(name)
 
@@ -78,14 +78,14 @@ def test_invalid_names(name):
 
 
 def test_name_whitespace_is_normalised():
-    assert validate_name("  Ana    Lopez ") == "Ana Lopez"
+    assert validate_name(" Lucia    Lopez ") == "Rodrigo Vidal"
 
 
 # capacity
 
 def test_booking_reduces_capacity_and_stores_fare(store):
     offer = make_offer(seats=5, changeable=True, refundable=True, price=40.0)
-    b = store.book(offer, "Ana Lopez", 2)
+    b = store.book(offer, "Rodrigo Vidal", 2)
     assert store.seats_left(offer) == 3
     assert b.total_price_eur == 80.0 and b.fare.refundable and b.fare.changeable
     assert b.payment_status.startswith("SIMULATED")
@@ -93,40 +93,40 @@ def test_booking_reduces_capacity_and_stores_fare(store):
 
 def test_catalogue_offer_is_not_mutated(store):
     offer = make_offer(seats=5)
-    store.book(offer, "Ana Lopez", 2)
+    store.book(offer, "Rodrigo Vidal", 2)
     assert offer.seats_available == 5
 
 
 def test_cannot_book_more_than_remaining(store):
     offer = make_offer(seats=3)
-    store.book(offer, "Ana Lopez", 2)
+    store.book(offer, "Rodrigo Vidal", 2)
     with pytest.raises(SeatsUnavailableError, match="1 seat"):
-        store.book(offer, "Bo Berg", 2)
+        store.book(offer, "Diego Ramos", 2)
     assert store.seats_left(offer) == 1
 
 
 def test_can_book_exactly_the_last_seats(store):
     offer = make_offer(seats=2)
-    store.book(offer, "Ana Lopez", 2)
+    store.book(offer, "Rodrigo Vidal", 2)
     assert store.seats_left(offer) == 0
     with pytest.raises(SeatsUnavailableError):
-        store.book(offer, "Bo Berg", 1)
+        store.book(offer, "Diego Ramos", 1)
 
 
 def test_sold_out_offer_cannot_be_booked(store):
     with pytest.raises(SeatsUnavailableError):
-        store.book(make_offer(seats=0), "Ana Lopez")
+        store.book(make_offer(seats=0), "Rodrigo Vidal")
 
 
 @pytest.mark.parametrize("n", [0, -1, 10])
 def test_passenger_count_limits(store, n):
     with pytest.raises(BookingError):
-        store.book(make_offer(seats=50), "Ana Lopez", n)
+        store.book(make_offer(seats=50), "Rodrigo Vidal", n)
 
 
 def test_apply_inventory_subtracts_only_confirmed_seats(store):
     offer = make_offer(seats=5)
-    b = store.book(offer, "Ana Lopez", 2)
+    b = store.book(offer, "Rodrigo Vidal", 2)
     assert store.apply_inventory([offer])[0].seats_available == 3
     store.cancel(b.reference)
     assert store.apply_inventory([offer])[0].seats_available == 5
@@ -138,7 +138,7 @@ def test_bookings_survive_reload(tmp_path):
     path = tmp_path / "b.json"
     offer = make_offer(seats=5, changeable=True)
     first = BookingStore(path, rng=random.Random(2), clock=lambda: NOW)
-    b = first.book(offer, "Ana Lopez", 2, profile="business")
+    b = first.book(offer, "Rodrigo Vidal", 2, profile="business")
     second = BookingStore(path)
     assert second.get(b.reference) == b
     assert second.seats_left(offer) == 3
@@ -146,7 +146,7 @@ def test_bookings_survive_reload(tmp_path):
 
 def test_failed_booking_writes_nothing(store, tmp_path):
     with pytest.raises(SeatsUnavailableError):
-        store.book(make_offer(seats=0), "Ana Lopez")
+        store.book(make_offer(seats=0), "Rodrigo Vidal")
     assert not (tmp_path / "bookings.json").exists()
 
 
@@ -165,7 +165,7 @@ def test_booking_file_with_wrong_shape_is_a_clear_error(tmp_path):
 
 
 def test_no_temporary_file_left_behind(store, tmp_path):
-    store.book(make_offer(), "Ana Lopez")
+    store.book(make_offer(), "Rodrigo Vidal")
     assert [p.name for p in tmp_path.iterdir()] == ["bookings.json"]
 
 
@@ -173,7 +173,7 @@ def test_no_temporary_file_left_behind(store, tmp_path):
 
 def test_cancel_refundable_returns_price_minus_fee(store):
     offer = make_offer(seats=5, refundable=True, price=50.0)
-    b = store.book(offer, "Ana Lopez", 2)
+    b = store.book(offer, "Rodrigo Vidal", 2)
     c = store.cancel(b.reference)
     assert c.status is BookingStatus.CANCELLED and c.refund_eur == 90.0
     assert store.seats_left(offer) == 5
@@ -181,12 +181,12 @@ def test_cancel_refundable_returns_price_minus_fee(store):
 
 def test_cancel_non_refundable_returns_nothing(store):
     offer = make_offer(seats=5, refundable=False)
-    c = store.cancel(store.book(offer, "Ana Lopez").reference)
+    c = store.cancel(store.book(offer, "Rodrigo Vidal").reference)
     assert c.refund_eur == 0.0 and c.payment_status == "SIMULATED_PAID_NO_REFUND"
 
 
 def test_cannot_cancel_twice(store):
-    ref = store.book(make_offer(), "Ana Lopez").reference
+    ref = store.book(make_offer(), "Rodrigo Vidal").reference
     store.cancel(ref)
     with pytest.raises(BookingError, match="already cancelled"):
         store.cancel(ref)
@@ -199,15 +199,15 @@ def test_cancel_unknown_reference(store):
 
 def test_seat_freed_by_cancellation_can_be_rebooked(store):
     offer = make_offer(seats=1)
-    ref = store.book(offer, "Ana Lopez").reference
+    ref = store.book(offer, "Rodrigo Vidal").reference
     store.cancel(ref)
-    assert store.book(offer, "Bo Berg").status is BookingStatus.CONFIRMED
+    assert store.book(offer, "Diego Ramos").status is BookingStatus.CONFIRMED
 
 
 def test_all_lists_in_creation_order(store):
     times = iter(datetime(2026, 7, 5, 10, i) for i in range(5))
     s = BookingStore(store.path, rng=random.Random(3), clock=lambda: next(times))
-    refs = [s.book(make_offer(seats=9), "Ana Lopez").reference for _ in range(3)]
+    refs = [s.book(make_offer(seats=9), "Rodrigo Vidal").reference for _ in range(3)]
     assert [b.reference for b in s.all()] == refs
     
 def test_check_character_catches_every_single_character_typo():
@@ -230,7 +230,7 @@ def test_cannot_book_a_bus_that_has_left(tmp_path):
     after = datetime(2026, 7, 13, 9, 1)
     s = BookingStore(tmp_path / "b.json", clock=lambda: NOW, travel_clock=lambda: after)
     with pytest.raises(BookingError, match="departed"):
-        s.book(make_offer(), "Ana Lopez")
+        s.book(make_offer(), "Rodrigo Vidal")
     assert s.all() == []
 
 
@@ -238,10 +238,10 @@ def test_departure_exactly_now_is_too_late(tmp_path):
     at = datetime(2026, 7, 13, 9, 0)
     s = BookingStore(tmp_path / "b.json", clock=lambda: NOW, travel_clock=lambda: at)
     with pytest.raises(BookingError, match="departed"):
-        s.book(make_offer(), "Ana Lopez")
+        s.book(make_offer(), "Rodrigo Vidal")
 
 
 def test_can_book_one_minute_before_departure(tmp_path):
     before = datetime(2026, 7, 13, 8, 59)
     s = BookingStore(tmp_path / "b.json", clock=lambda: NOW, travel_clock=lambda: before)
-    assert s.book(make_offer(), "Ana Lopez").status is BookingStatus.CONFIRMED
+    assert s.book(make_offer(), "Rodrigo Vidal").status is BookingStatus.CONFIRMED

@@ -34,8 +34,8 @@ echo "wrote $OUT/17_errors.txt"
 TOP=$("$PY" -m bbspain rank --top 1 | awk '/^ *1 +[A-Z][A-Z]_/ {print $2; exit}')
 {
   echo "\$ rank (top offer: $TOP)"; "$PY" -m bbspain rank --top 1 | sed -n '/^ *#/,/^Showing/p'
-  echo; echo "\$ book --offer $TOP --name \"Ana Lopez\" --passengers 2"
-  BOOK=$("$PY" -m bbspain book --offer "$TOP" --name "Ana Lopez" --passengers 2); echo "$BOOK"
+  echo; echo "\$ book --offer $TOP --name \"Rodrigo Vidal\" --passengers 2"
+  BOOK=$("$PY" -m bbspain book --offer "$TOP" --name "Rodrigo Vidal" --passengers 2); echo "$BOOK"
   REF=$(echo "$BOOK" | awk '/Reference/ {print $2}')
   echo; echo "\$ rank (same search again: the booked seats are gone from the top offer)"
   "$PY" -m bbspain rank --top 1 | sed -n '/^ *#/,/^Showing/p'

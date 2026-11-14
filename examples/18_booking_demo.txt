@@ -5,12 +5,12 @@ $ rank (top offer: CL_AGP_260714_0930_2)
 Scores are 0-100 (100 = best). Total = sum of weight x score. Fare: C = changeable, R = refundable. * = missing value, neutral score used. = after a rank means a tie.
 Showing 1 of 24 acceptable offers (use --top 0 for all).
 
-$ book --offer CL_AGP_260714_0930_2 --name "Ana Lopez" --passengers 2
+$ book --offer CL_AGP_260714_0930_2 --name "Rodrigo Vidal" --passengers 2
 Booking confirmation
 ====================
   Reference  BB-261114-HBJ8FW
   Status     CONFIRMED
-  Passenger  Ana Lopez (x2)
+  Passenger  Rodrigo Vidal (x2)
   Journey    Madrid -> Malaga with CostaLink
   Departure  Tue 14 Jul 2026 09:30
   Arrival    Tue 14 Jul 2026 15:52
@@ -28,14 +28,14 @@ Showing 1 of 24 acceptable offers (use --top 0 for all).
 $ bookings
 Reference         Status     Company    Destination  Departs       Pax    EUR  Name
 ----------------  ---------  ---------  -----------  ------------  ---  -----  ---------
-BB-261114-HBJ8FW  CONFIRMED  CostaLink  Malaga       14 Jul 09:30    2  85.80  Ana Lopez
+BB-261114-HBJ8FW  CONFIRMED  CostaLink  Malaga       14 Jul 09:30    2  85.80  Rodrigo Vidal
 
 $ cancel BB-261114-HBJ8FW
 Booking cancelled
 =================
   Reference  BB-261114-HBJ8FW
   Status     CANCELLED
-  Passenger  Ana Lopez (x2)
+  Passenger  Rodrigo Vidal (x2)
   Journey    Madrid -> Malaga with CostaLink
   Departure  Tue 14 Jul 2026 09:30
   Arrival    Tue 14 Jul 2026 15:52

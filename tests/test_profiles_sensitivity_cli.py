@@ -221,7 +221,7 @@ def test_validate_and_rejected_file_written(project, capsys):
 def test_book_show_cancel_flow(project, capsys):
     _, out, _ = run(project, capsys, "rank", "--top", "1")
     offer_id = re.search(r"^\s*1\s+([A-Z]{2}_\w+)", out, re.M).group(1)
-    code, out, _ = run(project, capsys, "book", "--offer", offer_id, "--name", "Ana Lopez", "-n", "2")
+    code, out, _ = run(project, capsys, "book", "--offer", offer_id, "--name", "Rodrigo Vidal", "-n", "2")
     assert code == 0 and "Booking confirmation" in out and "SIMULATED" in out
     ref = re.search(r"Reference\s+(BB-\S+)", out).group(1)
     assert ref in run(project, capsys, "bookings")[1]
@@ -234,7 +234,7 @@ def test_booking_reduces_seats_in_next_search(project, capsys):
     _, out, _ = run(project, capsys, "rank", "--top", "1")
     row = re.search(r"^\s*1\s+([A-Z]{2}_\w+).*?\s(\d+)\s+\|", out, re.M)
     offer_id, seats_before = row.group(1), int(row.group(2))
-    run(project, capsys, "book", "--offer", offer_id, "--name", "Ana Lopez", "-n", "3")
+    run(project, capsys, "book", "--offer", offer_id, "--name", "Rodrigo Vidal", "-n", "3")
     _, out2, _ = run(project, capsys, "rank", "--top", "0")
     row2 = re.search(rf"{offer_id}.*?\s(\d+)\s+\|", out2)
     assert int(row2.group(1)) == seats_before - 3
@@ -242,13 +242,13 @@ def test_booking_reduces_seats_in_next_search(project, capsys):
 
 def test_overbooking_is_refused(project, capsys):
     offer_id = next(o.offer_id for o in load_catalogue(project / "data").offers if o.seats_available == 2)
-    assert run(project, capsys, "book", "--offer", offer_id, "--name", "Ana Lopez", "-n", "2")[0] == 0
-    code, _, err = run(project, capsys, "book", "--offer", offer_id, "--name", "Bo Berg")
+    assert run(project, capsys, "book", "--offer", offer_id, "--name", "Rodrigo Vidal", "-n", "2")[0] == 0
+    code, _, err = run(project, capsys, "book", "--offer", offer_id, "--name", "Diego Ramos")
     assert code == 2 and "0 seat" in err
 
 
 def test_unknown_offer_cannot_be_booked(project, capsys):
-    code, _, err = run(project, capsys, "book", "--offer", "SR_AGP_260713_0000_1", "--name", "Ana Lopez")
+    code, _, err = run(project, capsys, "book", "--offer", "SR_AGP_260713_0000_1", "--name", "Rodrigo Vidal")
     assert code == 2 and "No such offer" in err
 
 
@@ -259,7 +259,7 @@ def test_alternative_config_changes_normalisation(project, capsys):
 
 
 def test_interactive_flow_books_an_offer(mk):
-    answers = iter(["Malaga", "1", "1", "1", "Ana Lopez"])
+    answers = iter(["Malaga", "1", "1", "1", "Rodrigo Vidal"])
     lines = []
     cmd_interactive(mk, None, ask=lambda prompt: next(answers), out=lines.append)
     text = "\n".join(lines)
@@ -293,4 +293,4 @@ def test_real_clock_refuses_the_july_2026_dataset(project):
     settings = replace(load_settings(project / "config" / "settings.json"), simulated_now=None)
     market = Marketplace.open(settings, project)
     with pytest.raises(BookingError, match="departed"):
-        market.book(market.catalogue.offers[0].offer_id, "Ana Lopez", 1)
+        market.book(market.catalogue.offers[0].offer_id, "Rodrigo Vidal", 1)
