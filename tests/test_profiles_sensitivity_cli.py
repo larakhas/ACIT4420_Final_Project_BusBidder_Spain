@@ -7,7 +7,7 @@ import pytest
 
 from bbspain.cli import cmd_interactive, main
 from bbspain.config import load_settings
-from bbspain.errors import ConfigError
+from bbspain.errors import BookingError, ConfigError
 from bbspain.loader import load_catalogue
 from bbspain.marketplace import Marketplace
 from bbspain.profiles import load_profiles
@@ -273,3 +273,24 @@ def test_interactive_recovers_from_bad_input(mk):
     text = "\n".join(lines)
     assert "Unknown destination" in text and "Please enter a number" in text and "Invalid passenger count" in text
     assert mk.bookings.all() == []
+    
+def test_interactive_ends_cleanly_when_input_runs_out(project, monkeypatch, capsys):
+    import io
+    monkeypatch.setattr("sys.stdin", io.StringIO(""))
+    assert main(["--root", str(project)]) == 0
+    assert "Traceback" not in capsys.readouterr().err
+
+
+def test_simulated_now_must_be_a_date_and_time(tmp_path):
+    f = tmp_path / "s.json"
+    f.write_text('{"simulated_now": "next tuesday"}', encoding="utf-8")
+    with pytest.raises(ConfigError, match="simulated_now"):
+        load_settings(f)
+
+
+def test_real_clock_refuses_the_july_2026_dataset(project):
+    from dataclasses import replace
+    settings = replace(load_settings(project / "config" / "settings.json"), simulated_now=None)
+    market = Marketplace.open(settings, project)
+    with pytest.raises(BookingError, match="departed"):
+        market.book(market.catalogue.offers[0].offer_id, "Ana Lopez", 1)
