@@ -1,20 +1,20 @@
 Weight sensitivity for Brief example traveller: Madrid -> Malaga
-Baseline winner: CL_AGP_260714_0930_2   weights: price 40%, duration 25%, departure time 15%, flexibility 20%
+Baseline winner: SR_AGP_260714_0730_2   weights: price 40%, duration 25%, departure time 15%, flexibility 20%
 
 Scenario                   Winner                Result
 -------------------------  --------------------  -------
-Price -10 points           CL_AGP_260714_0930_2  same
-Price +10 points           CL_AGP_260714_0930_2  same
-Duration -10 points        CL_AGP_260714_0930_2  same
-Duration +10 points        CL_AGP_260714_0930_2  same
-Departure time -10 points  CL_AGP_260714_1550_2  CHANGED
-Departure time +10 points  CL_AGP_260714_0930_2  same
-Flexibility -10 points     CL_AGP_260714_0930_2  same
-Flexibility +10 points     CL_AGP_260714_0930_2  same
+Price -10 points           CL_AGP_260714_0930_2  CHANGED
+Price +10 points           SR_AGP_260714_0730_2  same
+Duration -10 points        SR_AGP_260714_0730_2  same
+Duration +10 points        CL_AGP_260714_0930_2  CHANGED
+Departure time -10 points  NV_AGP_260713_2305_2  CHANGED
+Departure time +10 points  SR_AGP_260714_0730_2  same
+Flexibility -10 points     SR_AGP_260714_0730_2  same
+Flexibility +10 points     CL_AGP_260714_0930_2  CHANGED
 
-The winner is unchanged in 7 of 8 scenarios.
+The winner is unchanged in 4 of 8 scenarios.
 
 Winner under each normalisation method (weights unchanged):
-  guarded_minmax  CL_AGP_260714_0930_2
-  minmax          CL_AGP_260714_0930_2
+  guarded_minmax  SR_AGP_260714_0730_2
+  minmax          SR_AGP_260714_0730_2
   ratio           CL_AGP_260714_0930_2

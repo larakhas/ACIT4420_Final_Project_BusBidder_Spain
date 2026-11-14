@@ -17,25 +17,25 @@ Removed by: maximum transfers 30, changeable ticket 21, maximum duration 20, sea
 
  #  Offer ID              Company         Date    Dep    Arr    Length    EUR  Tr  Fare         Seats  |  Price  Durat  Depart   Flex  Trnsf  Total
 --  --------------------  --------------  ------  -----  -----  ------  -----  --  -----------  -----  -  -----  -----  ------  -----  -----  -----
- 1  CE_AGP_260713_0650_2  Camino Express  13 Jul  06:50  12:32  5h42    82.61   0  Premier CR      46  |   30.4   87.2   100.0  100.0  100.0  88.58
- 2  CE_AGP_260714_0645_2  Camino Express  14 Jul  06:45  12:28  5h43    93.33   0  Premier CR      26  |   13.5   86.6   100.0  100.0  100.0  86.66
- 3  CE_AGP_260712_0645_2  Camino Express  12 Jul  06:45  12:31  5h46    98.59   0  Premier CR      21  |    5.2   84.6   100.0  100.0  100.0  85.12
- 4  CE_AGP_260713_0650_1  Camino Express  13 Jul  06:50  12:32  5h42    56.97   0  Standard C-     42  |   70.9   87.2   100.0   60.0  100.0  84.62
- 5  CE_AGP_260714_0645_1  Camino Express  14 Jul  06:45  12:28  5h43    64.36   0  Standard C-     28  |   59.2   86.6   100.0   60.0  100.0  83.22
- 6  CE_AGP_260712_0645_1  Camino Express  12 Jul  06:45  12:31  5h46    67.99   0  Standard C-     16  |   53.5   84.6   100.0   60.0  100.0  81.95
- 7  CL_AGP_260714_0930_2  CostaLink       14 Jul  09:30  15:52  6h22    42.90   0  Flex CR         40  |   93.0   60.4    83.3  100.0  100.0  81.28
- 8  CL_AGP_260713_0930_2  CostaLink       13 Jul  09:30  15:55  6h25    44.59   0  Flex CR         16  |   90.4   58.4    83.3  100.0  100.0  80.31
- 9  CL_AGP_260712_0935_2  CostaLink       12 Jul  09:35  16:02  6h27    49.34   0  Flex CR         44  |   82.9   57.0    80.6  100.0  100.0  78.39
-10  CE_AGP_260714_1215_2  Camino Express  14 Jul  12:15  17:39  5h24    85.76   0  Premier CR      25  |   25.5   99.3     0.0  100.0  100.0  67.31
+ 1  CE_AGP_260713_0650_2  Camino Express  13 Jul  06:50  12:32  5h42    82.61   0  Value CR        46  |   28.6   87.2   100.0  100.0  100.0  88.39
+ 2  CE_AGP_260714_0645_2  Camino Express  14 Jul  06:45  12:28  5h43    93.33   0  Value CR        26  |   12.7   86.6   100.0  100.0  100.0  86.57
+ 3  CE_AGP_260712_0645_2  Camino Express  12 Jul  06:45  12:31  5h46    98.59   0  Value CR        21  |    4.9   84.6   100.0  100.0  100.0  85.09
+ 4  CE_AGP_260713_0650_1  Camino Express  13 Jul  06:50  12:32  5h42    56.97   0  Standard C-     42  |   66.5   87.2   100.0   60.0  100.0  84.19
+ 5  CE_AGP_260714_0645_1  Camino Express  14 Jul  06:45  12:28  5h43    64.36   0  Standard C-     28  |   55.6   86.6   100.0   60.0  100.0  82.86
+ 6  CE_AGP_260712_0645_1  Camino Express  12 Jul  06:45  12:31  5h46    67.99   0  Standard C-     16  |   50.2   84.6   100.0   60.0  100.0  81.62
+ 7  CL_AGP_260714_0930_2  CostaLink       14 Jul  09:30  15:52  6h22    47.82   0  Flex CR         40  |   80.1   60.4    83.3  100.0  100.0  79.98
+ 8  CL_AGP_260713_0930_2  CostaLink       13 Jul  09:30  15:55  6h25    49.71   0  Flex CR         16  |   77.3   58.4    83.3  100.0  100.0  79.00
+ 9  CL_AGP_260712_0935_2  CostaLink       12 Jul  09:35  16:02  6h27    55.00   0  Flex CR         44  |   69.4   57.0    80.6  100.0  100.0  77.05
+10  CE_AGP_260714_1215_2  Camino Express  14 Jul  12:15  17:39  5h24    85.76   0  Value CR        25  |   23.9   99.3     0.0  100.0  100.0  67.16
 Scores are 0-100 (100 = best). Total = sum of weight x score. Fare: C = changeable, R = refundable. * = missing value, neutral score used. = after a rank means a tie.
 Showing 10 of 28 acceptable offers (use --top 0 for all).
 
 Why CE_AGP_260713_0650_2 (Camino Express, Mon 13 Jul 06:50) ranks first for the Business traveller:
   + Duration 87/100: 5h42, 19 min slower than the fastest acceptable option
   + Departure time 100/100: departs 06:50, inside your 06:30-09:00 window
-  + Flexibility 100/100: 'Premier' fare is changeable and refundable
+  + Flexibility 100/100: 'Value' fare is changeable and refundable
   + Transfers 100/100: a direct journey
-  - Price 30/100: EUR 44.12 dearer than the cheapest acceptable offer (EUR 38.49)
-  Lead over #2 (CE_AGP_260714_0645_2, Camino Express): 1.92 points, a very narrow margin. Gains most on price (+1.7), duration (+0.2).
+  - Price 29/100: EUR 48.26 dearer than the cheapest acceptable offer (EUR 34.35)
+  Lead over #2 (CE_AGP_260714_0645_2, Camino Express): 1.82 points, a very narrow margin. Gains most on price (+1.6), duration (+0.2).
   Because the margin is small, small changes in weights could change the winner (see the `sensitivity` command).
   This is the best match under your hard constraints and these weights (price 10%, duration 35%, departure time 25%, flexibility 20%, transfers 10%), not an objectively best ticket.

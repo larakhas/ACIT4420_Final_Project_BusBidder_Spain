@@ -12,27 +12,27 @@ Soft preferences (scored and weighted; they never remove an offer):
   * preferred departure: evening (18:00-22:00)
   * weights: price 25%, duration 25%, departure time 25%, flexibility 25%   [normalisation: guarded_minmax]
 
-Searched 2271 offers: 72 match route and dates, 9 meet every hard constraint.
-Removed by: budget 36, changeable ticket 21, maximum transfers 18, seat availability 2 (an offer can break several).
+Searched 2271 offers: 72 match route and dates, 15 meet every hard constraint.
+Removed by: budget 36, changeable ticket 21, seat availability 2 (an offer can break several).
 
-#  Offer ID              Company    Date    Dep    Arr      Length    EUR  Tr  Fare           Seats  |  Price  Durat  Depart   Flex  Total
--  --------------------  ---------  ------  -----  -------  ------  -----  --  -------------  -----  -  -----  -----  ------  -----  -----
-1  CL_BCN_260714_1545_2  CostaLink  14 Jul  15:45  23:27    7h42    47.45   0  Flex CR            4  |   70.9   93.8    25.0  100.0  72.43
-2  CL_BCN_260714_0930_2  CostaLink  14 Jul  09:30  17:07    7h37    45.67   0  Flex CR           12  |   90.7   96.9     0.0  100.0  71.91
-3  NV_BCN_260713_2145_2  NocheVia   13 Jul  21:45  07:20+1  9h35    45.87   1  Night Plus C-      3  |   88.5   24.1   100.0   60.0  68.15
-4  CL_BCN_260713_0935_2  CostaLink  13 Jul  09:35  17:07    7h32    49.59   0  Flex CR            1  |   47.0  100.0     0.0  100.0  61.76
-5  NV_BCN_260713_2310_2  NocheVia   13 Jul  23:10  09:06+1  9h56    44.84   1  Night Plus C-     43  |  100.0   11.1    61.1   60.0  58.06
-6  NV_BCN_260714_2135_2  NocheVia   14 Jul  21:35  07:49+1  10h14   49.25   1  Night Plus C-     10  |   50.8    0.0   100.0   60.0  52.71
-7  VB_BCN_260714_1450_1  VerdeBus   14 Jul  14:50  22:28    7h38    49.25   0  Green C-          23  |   50.8   96.3     0.0   60.0  51.78
-8  VB_BCN_260714_0830_1  VerdeBus   14 Jul  08:30  16:36    8h06    47.83   0  Green C-          10  |   66.7   79.0     0.0   60.0  51.42
-9  NV_BCN_260714_2305_2  NocheVia   14 Jul  23:05  09:13+1  10h08   47.23   1  Night Plus C-     12  |   73.3    3.7    63.9   60.0  50.24
+ #  Offer ID              Company   Date    Dep    Arr      Length    EUR  Tr  Fare           Seats  |  Price  Durat  Depart  Flex  Total
+--  --------------------  --------  ------  -----  -------  ------  -----  --  -------------  -----  -  -----  -----  ------  ----  -----
+ 1  NV_BCN_260713_2145_2  NocheVia  13 Jul  21:45  06:46+1  9h01    40.95   0  Night Plus C-      3  |   54.8  100.0   100.0  60.0  78.70
+ 2  NV_BCN_260713_2310_2  NocheVia  13 Jul  23:10  08:30+1  9h20    40.03   0  Night Plus C-     43  |   63.5   82.4    61.1  60.0  66.77
+ 3  NV_BCN_260714_2135_2  NocheVia  14 Jul  21:35  07:12+1  9h37    43.97   0  Night Plus C-     10  |   26.1   66.7   100.0  60.0  63.21
+ 4  NV_BCN_260712_2145_2  NocheVia  12 Jul  21:45  07:04+1  9h19    46.72   0  Night Plus C-     18  |    0.0   83.4   100.0  60.0  60.84
+ 5  NV_BCN_260714_2305_2  NocheVia  14 Jul  23:05  08:37+1  9h32    42.16   0  Night Plus C-     12  |   43.3   71.3    63.9  60.0  59.64
+ 6  NV_BCN_260712_2300_2  NocheVia  12 Jul  23:00  08:34+1  9h34    44.65   0  Night Plus C-     19  |   19.7   69.5    66.7  60.0  53.96
+ 7  SR_BCN_260714_0730_2  SolRuta   14 Jul  07:30  17:22    9h52    36.19   1  Plus C-           25  |  100.0   52.9     0.0  60.0  53.22
+ 8  SR_BCN_260713_1535_2  SolRuta   13 Jul  15:35  01:37+1  10h02   41.25   1  Plus C-           31  |   51.9   43.6    19.4  60.0  43.75
+ 9  SR_BCN_260714_1100_2  SolRuta   14 Jul  11:00  21:19    10h19   37.85   1  Plus C-            8  |   84.2   27.9     0.0  60.0  43.04
+10  SR_BCN_260712_1530_2  SolRuta   12 Jul  15:30  01:21+1  9h51    42.39   1  Plus C-           43  |   41.1   53.8    16.7  60.0  42.89
 Scores are 0-100 (100 = best). Total = sum of weight x score. Fare: C = changeable, R = refundable. * = missing value, neutral score used. = after a rank means a tie.
-Showing 9 of 9 acceptable offers (use --top 0 for all).
+Showing 10 of 15 acceptable offers (use --top 0 for all).
 
-Why CL_BCN_260714_1545_2 (CostaLink, Tue 14 Jul 15:45) ranks first for the Brief example traveller (custom weights):
-  + Duration 94/100: 7h42, 10 min slower than the fastest acceptable option
-  + Flexibility 100/100: 'Flex' fare is changeable and refundable
-  - Departure time 25/100: departs 15:45, 135 min outside your evening (18:00-22:00) window
-  Lead over #2 (CL_BCN_260714_0930_2, CostaLink): 0.52 points, a very narrow margin. Gains most on departure time (+6.2). Loses most on price (-5.0).
-  Because the margin is small, small changes in weights could change the winner (see the `sensitivity` command).
+Why NV_BCN_260713_2145_2 (NocheVia, Mon 13 Jul 21:45) ranks first for the Brief example traveller (custom weights):
+  + Duration 100/100: the fastest acceptable journey
+  + Departure time 100/100: departs 21:45, inside your evening (18:00-22:00) window
+  - Price 55/100: EUR 4.76 dearer than the cheapest acceptable offer (EUR 36.19)
+  Lead over #2 (NV_BCN_260713_2310_2, NocheVia): 11.93 points, a clear margin. Gains most on departure time (+9.7), duration (+4.4). Loses most on price (-2.2).
   This is the best match under your hard constraints and these weights (price 25%, duration 25%, departure time 25%, flexibility 25%), not an objectively best ticket.
