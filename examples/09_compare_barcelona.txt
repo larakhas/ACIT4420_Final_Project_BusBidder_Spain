@@ -1,10 +1,10 @@
 Profile comparison: Madrid -> Barcelona, 12 Jul to 14 Jul 2026
 Every profile starts from the same 72 offers on this route and dates.
 
-Profile                        Acceptable  Recommended           Company            EUR  Length  Departs    Fare      Score
------------------------------  ----------  --------------------  --------------  ------  ------  ---------  --------  -----
-Brief example traveller                15  SR_BCN_260714_0730_2  SolRuta          36.19  9h52    Tue 07:30  Plus C-   80.22
-Budget traveller                       70  CL_BCN_260714_0930_1  CostaLink        39.16  7h37    Tue 09:30  Light --  84.62
-Business traveller                     33  CE_BCN_260713_0645_2  Camino Express  105.72  6h23    Mon 06:45  Value CR  89.80
-Flexibility-focused tourist            50  CL_BCN_260713_0935_2  CostaLink        55.29  7h32    Mon 09:35  Flex CR   89.55
-Environment-focused traveller          70  VB_BCN_260712_0815_1  VerdeBus         64.05  7h36    Sun 08:15  Green C-  86.99
+Profile                        Acceptable  Recommended           Company            EUR  Length  Departs    Fare              Score
+-----------------------------  ----------  --------------------  --------------  ------  ------  ---------  ----------------  -----
+Brief example traveller                15  SR_BCN_260714_0730_2  SolRuta          36.19  9h52    Tue 07:30  Plus C-           80.22
+Budget traveller                       70  CL_BCN_260714_0930_1  CostaLink        39.16  7h37    Tue 09:30  Light --          84.62
+Business traveller                     33  CE_BCN_260713_0645_2  Camino Express  105.72  6h23    Mon 06:45  Superflexible CR  89.80
+Flexibility-focused tourist            50  CL_BCN_260713_0935_2  CostaLink        55.29  7h32    Mon 09:35  Flex CR           89.55
+Environment-focused traveller          70  VB_BCN_260712_0815_1  VerdeBus         64.05  7h36    Sun 08:15  Green C-          86.99

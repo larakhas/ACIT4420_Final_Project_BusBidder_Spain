@@ -1,10 +1,10 @@
 Profile comparison: Madrid -> Malaga, 12 Jul to 14 Jul 2026
 Every profile starts from the same 72 offers on this route and dates.
 
-Profile                        Acceptable  Recommended           Company           EUR  Length  Departs    Fare           Score
------------------------------  ----------  --------------------  --------------  -----  ------  ---------  -------------  -----
-Brief example traveller                19  SR_AGP_260714_0730_2  SolRuta         33.64  8h36    Tue 07:30  Plus C-        68.40
-Budget traveller                       66  CL_AGP_260714_1550_1  CostaLink       35.02  6h35    Tue 15:50  Light --       84.17
-Business traveller                     28  CE_AGP_260713_0650_2  Camino Express  82.61  5h42    Mon 06:50  Value CR       88.39
-Flexibility-focused tourist            47  CL_AGP_260713_0930_2  CostaLink       49.71  6h25    Mon 09:30  Flex CR        89.21
-Environment-focused traveller          66  VB_AGP_260714_0815_2  VerdeBus        61.93  7h24    Tue 08:15  Green Flex CR  80.44
+Profile                        Acceptable  Recommended           Company           EUR  Length  Departs    Fare              Score
+-----------------------------  ----------  --------------------  --------------  -----  ------  ---------  ----------------  -----
+Brief example traveller                19  SR_AGP_260714_0730_2  SolRuta         33.64  8h36    Tue 07:30  Plus C-           68.40
+Budget traveller                       66  CL_AGP_260714_1550_1  CostaLink       35.02  6h35    Tue 15:50  Light --          84.17
+Business traveller                     28  CE_AGP_260713_0650_2  Camino Express  82.61  5h42    Mon 06:50  Superflexible CR  88.39
+Flexibility-focused tourist            47  CL_AGP_260713_0930_2  CostaLink       49.71  6h25    Mon 09:30  Flex CR           89.21
+Environment-focused traveller          66  VB_AGP_260714_0815_2  VerdeBus        61.93  7h24    Tue 08:15  Green Flex CR     80.44

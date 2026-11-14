@@ -52,7 +52,7 @@ DESTINATIONS = [
 # Fares: (tier digit, name, changeable, refundable, luggage kg)
 FARES = {
     "SR": [(1, "Saver", False, False, 15), (2, "Plus", True, False, 20)],
-    "CE": [(1, "Standard", True, False, 20), (2, "Value", True, True, 30)],
+    "CE": [(1, "Standard", True, False, 20), (2, "Superflexible", True, True, 30)],
     "CL": [(1, "Light", False, False, 15), (2, "Flex", True, True, 25)],
     "VB": [(1, "Green", True, False, 20), (2, "Green Flex", True, True, 25)],
     "NV": [(1, "Night", False, False, 15), (2, "Night Plus", True, False, 20)],
@@ -134,7 +134,7 @@ DIRTY_ROWS = [
     # REJECT: impossible calendar date
     ["CL_VLC_260732_1000_1", "CL", "Valencia", "2026-07-32 10:00", "2026-07-32 15:00", 300, "30.00", 0, 15, "Light", "false", "false", 10, 4.0, 20.0],
     # REJECT: arrival before departure
-    ["CE_BCN_260713_1100_2", "CE", "Barcelona", "2026-07-13 11:00", "2026-07-13 09:30", 390, "88.00", 0, 30, "Value", "true", "true", 10, 4.5, 36.0],
+    ["CE_BCN_260713_1100_2", "CE", "Barcelona", "2026-07-13 11:00", "2026-07-13 09:30", 390, "88.00", 0, 30, "Superflexible", "true", "true", 10, 4.5, 36.0],
     # REJECT: rating outside the 1-5 scale
     ["VB_SVQ_260713_1200_1", "VB", "Seville", "2026-07-13 12:00", "2026-07-13 20:30", 510, "45.00", 0, 20, "Green", "true", "false", 10, 8.2, 19.0],
     # REJECT: missing price
