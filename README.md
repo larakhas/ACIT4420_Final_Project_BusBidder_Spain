@@ -203,8 +203,8 @@ reloading the booking file, checking the relevant conditions and saving changes.
 Other writers receive a clear message asking them to retry.
 
 With the default settings, the lock directory is output/bookings.json.lock.
-An interrupted process may leave this directory behind. Remove it manually only
-after confirming that no booking process is running.
+An interrupted process may leave this directory behind. A lock older than 30
+seconds is treated as abandoned and removed automatically on the next booking.
 
 The booking loader checks the stored structure and rejects duplicate references.
 Confirmed bookings are used to calculate reserved capacity in one shared method.
