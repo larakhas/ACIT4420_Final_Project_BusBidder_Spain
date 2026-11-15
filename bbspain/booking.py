@@ -18,7 +18,6 @@ import json
 import logging
 import random
 import re
-import time
 from collections import Counter
 from datetime import datetime
 from pathlib import Path
@@ -36,7 +35,7 @@ ALPHABET = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789"            # 32 symbols
 REFERENCE = re.compile(rf"^BB-(?P<date>\d{{6}})-(?P<body>[{ALPHABET}]{{5}})(?P<check>[{ALPHABET}])$")
 NAME = re.compile(r"^[^\W\d_]+(?:[ '\-][^\W\d_]+)*$")     # letters in any language, joined by space/-/'
 MAX_NAME_LENGTH = 60
-LOCK_TIMEOUT_SECONDS = 30
+
 
 
 def check_char(date_part: str, body: str) -> str:
@@ -76,15 +75,6 @@ def validate_name(text: str) -> str:
 
     return cleaned_name
 
-def clear_stale_lock(lock: Path) -> None:
-    """Remove a lock left behind by a run that was interrupted before it could clean up."""
-    try:
-        age = time.time() - lock.stat().st_mtime
-        if age > LOCK_TIMEOUT_SECONDS:
-            lock.rmdir()
-    except OSError:
-        pass   # there is no lock, or another process removed it first
-
 def booking_write(func):
     """Protect booking changes and reload the latest saved bookings."""
     @wraps(func)
@@ -93,7 +83,6 @@ def booking_write(func):
 
         try:
             self.path.parent.mkdir(parents=True, exist_ok=True)
-            clear_stale_lock(lock)
             lock.mkdir()
         except FileExistsError:
             raise BookingError(
