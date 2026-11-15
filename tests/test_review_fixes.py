@@ -59,3 +59,26 @@ def test_passenger_name_requires_text(value):
     with pytest.raises(BookingError, match="must be text"):
         validate_name(value)
         
+def test_fresh_lock_blocks_a_booking(tmp_path):
+    from bbspain.errors import BookingError
+    path = tmp_path / "bookings.json"
+    (tmp_path / "bookings.json.lock").mkdir()
+    store = BookingStore(path, travel_clock=lambda: datetime(2026, 7, 5, 12, 0))
+    with pytest.raises(BookingError, match="busy"):
+        store.book(make_offer(), "Rodrigo Vidal")
+
+
+def test_stale_lock_is_removed(tmp_path):
+    import os
+    import time
+    from bbspain.booking import LOCK_TIMEOUT_SECONDS
+    path = tmp_path / "bookings.json"
+    lock = tmp_path / "bookings.json.lock"
+    lock.mkdir()
+    old = time.time() - LOCK_TIMEOUT_SECONDS - 5
+    os.utime(lock, (old, old))
+    store = BookingStore(path, travel_clock=lambda: datetime(2026, 7, 5, 12, 0))
+    booking = store.book(make_offer(), "Rodrigo Vidal")
+    assert store.get(booking.reference).passenger_name == "Rodrigo Vidal"
+    assert not lock.exists()
+        

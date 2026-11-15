@@ -190,6 +190,7 @@ To recreate the dataset itself:
 ```
 python scripts/generate_data.py
 ```
+
 ## Ranking requirements
 
 Custom search weights and traveller profiles must assign positive weights to
