@@ -8,48 +8,77 @@ program removes the offers that break a mandatory requirement and ranks the rest
 weighted scoring model. It explains why the top offer ranks first and lets the traveller make
 a simulated booking.
 
+
 ## Quick reference
 
 | | |
 |---|---|
-| Python version | 3.10 or newer |
+| Python version | 3.10 or newer; developed and tested with 3.11.9 |
 | Required libraries | None for the application (standard library only); `pytest` 7.0 or newer for the tests |
 | Program entry point | `bbspain/__main__.py` |
-| Run the application | `python -m bbspain` |
-| Run the tests | `python -m pytest` |
-| Input files | `data/companies.csv`, `data/destinations.csv`, `data/offers.csv` |
+| Exact command to run the application | `python -m bbspain` |
+| Exact command to run the tests | `python -m pytest` |
+| Input-file locations | `data/companies.csv`, `data/destinations.csv`, `data/offers.csv` |
 | Configuration files | `config/settings.json`, `config/profiles.json` |
 
 All commands are run from the project folder (the one that contains this file).
 
 ## Requirements
 
-- Python 3.10 or newer
+- Python 3.10 or newer. I developed and tested the project with Python 3.11.9.
 - The application itself uses only the Python standard library
 - `pytest` 7.0 or newer is needed to run the tests
 
 ## Setup
 
-Run these commands from the project folder (the one that contains this file):
+Open a terminal in the project folder, the one that contains this file.
+Create a virtual environment:
 
-```
+```bash
 python -m venv .venv
-.venv\Scripts\activate          (Windows)
-source .venv/bin/activate       (macOS / Linux)
-pip install -r requirements.txt
 ```
+
+You only need to create it once. If `.venv` already exists, skip this command and
+activate the existing environment.
+
+On Windows PowerShell:
+
+```powershell
+.\.venv\Scripts\Activate.ps1
+```
+
+On macOS or Linux:
+
+```bash
+source .venv/bin/activate
+```
+
+Then install the test dependency:
+
+```bash
+python -m pip install -r requirements.txt
+```
+
+When you open a new terminal later, activate the environment again before running the
+program or tests. If your computer uses `python3` instead of `python`, use that in the
+Python commands.
 
 ## Running the program
 
-The entry point is `bbspain/__main__.py`. Run it as a module from the project folder:
+The entry point is `bbspain/__main__.py`. The project has no `main.py`. The exact command to
+run the program, from the project folder, is:
 
 ```
 python -m bbspain
 ```
 
+### Interactive mode
+
 With no command, the program starts in interactive mode: it asks for a destination, a
 traveller profile and the number of passengers, shows the ranking and offers to book one of
 the top five.
+
+### Commands
 
 The same functions are available as commands:
 
@@ -65,7 +94,10 @@ The same functions are available as commands:
 | `python -m bbspain show <reference>` | Show one booking |
 | `python -m bbspain cancel <reference>` | Cancel a booking |
 
-Examples:
+`rank` uses the destination Malaga, the dates 12-14 July 2026 and the profile `brief` unless
+other values are given. `python -m bbspain rank -h` lists every option.
+
+### Examples
 
 ```
 python -m bbspain rank
@@ -77,13 +109,14 @@ python -m bbspain --normaliser minmax rank
 python -m bbspain book --offer CL_AGP_260714_0930_2 --name "Rodrigo Vidal" -n 2
 ```
 
-`rank` uses the destination Malaga, the dates 12-14 July 2026 and the profile `brief` unless
-other values are given. `python -m bbspain rank -h` lists every option.
+### Options for all commands
 
 Options that apply to all commands are written before the command: `--root <folder>`,
 `--config <file>`, `--normaliser <name>` and `--verbose`.
 
 ## Running the tests
+
+The exact command to run the tests, from the project folder, is:
 
 ```
 python -m pytest
@@ -92,6 +125,8 @@ python -m pytest
 There are 280 tests. They cover normal use, invalid input, missing data and boundary values.
 
 ## Where the files are
+
+### Files in the repository
 
 | Path | Content |
 |---|---|
@@ -107,6 +142,8 @@ There are 280 tests. They cover normal use, invalid input, missing data and boun
 | `scripts/make_examples.sh` | Regenerates everything in `examples/` |
 | `examples/` | Saved output used as evidence in the report |
 | `docs/` | Architecture description and diagrams |
+
+### Files the program creates
 
 The program creates these files when it runs. They are not in the repository:
 
@@ -140,13 +177,36 @@ validation has real problems to find. `python -m bbspain validate` shows the res
 
 ## Hard constraints and soft preferences
 
+### Hard constraints
+
 Hard constraints remove an offer before ranking: route, travel dates, free seats and, when the
 traveller sets them, maximum price, maximum transfers, maximum duration, minimum luggage
 allowance, changeable ticket and refundable ticket.
 
+### Soft preferences
+
 Soft preferences are scored from 0 to 100 and weighted: price, duration, departure time,
 flexibility, transfers, rating and CO2 emissions. Weights must total 100 %. The output of
 `rank` lists both groups above the ranking.
+
+### Weight rules
+
+Custom search weights and traveller profiles must assign positive weights to
+price, duration, departure-time convenience and ticket flexibility. Additional
+criteria are optional. All weights must total 100% or 1.0.
+
+## Booking storage and locking
+
+Booking and cancellation operations acquire an exclusive local lock before
+reloading the booking file, checking the relevant conditions and saving changes.
+Other writers receive a clear message asking them to retry.
+
+With the default settings, the lock directory is `output/bookings.json.lock`.
+An interrupted process may leave this directory behind. Remove it manually
+only after confirming that no booking process is running.
+
+The booking loader checks the stored structure and rejects duplicate references.
+Confirmed bookings are used to calculate reserved capacity in one shared method.
 
 ## Settings
 
@@ -170,6 +230,8 @@ booked.
 
 ## Reproducing the examples
 
+### The saved examples
+
 The files in `examples/` are created by one script. On Windows, run it in Git Bash:
 
 ```
@@ -185,27 +247,10 @@ The ranking results are the same on every run because the dataset comes from a f
 seed and ties are sorted in a fixed order. Only the booking reference in
 `examples/18_booking_demo.txt` changes, because it is random and contains the current date.
 
+### The dataset
+
 To recreate the dataset itself:
 
 ```
 python scripts/generate_data.py
 ```
-
-## Ranking requirements
-
-Custom search weights and traveller profiles must assign positive weights to
-price, duration, departure-time convenience and ticket flexibility. Additional
-criteria are optional. All weights must total 100% or 1.0.
-
-## Booking storage and locking
-
-Booking and cancellation operations acquire an exclusive local lock before
-reloading the booking file, checking the relevant conditions and saving changes.
-Other writers receive a clear message asking them to retry.
-
-With the default settings, the lock directory is output/bookings.json.lock.
-An interrupted process may leave this directory behind. Remove it manually
-only after confirming that no booking process is running.
-
-The booking loader checks the stored structure and rejects duplicate references.
-Confirmed bookings are used to calculate reserved capacity in one shared method.
