@@ -130,78 +130,169 @@ def criterion(**spec):
     return register
 
 
-def _cheapest(c): return min(o.price_eur for o in c)
+# price
+
+def _cheapest(accepted):
+    return min(o.price_eur for o in accepted)
+
+
+def _show_price(offer, request):
+    return f"{offer.price_eur:.2f}"
+
+
+def _describe_price(offer, request, accepted):
+    cheapest = _cheapest(accepted)
+    if offer.price_eur <= cheapest + 0.005:
+        return "the cheapest acceptable fare"
+    extra = offer.price_eur - cheapest
+    return f"EUR {extra:.2f} dearer than the cheapest acceptable offer (EUR {cheapest:.2f})"
 
 
 @criterion(key="price", label="Price", header="Price", kind="relative",
-           show=lambda o, r: f"{o.price_eur:.2f}",
-           describe=lambda o, r, c: ("the cheapest acceptable fare" if o.price_eur <= _cheapest(c) + 0.005 else
-                                     f"EUR {o.price_eur - _cheapest(c):.2f} dearer than the cheapest acceptable offer "
-                                     f"(EUR {_cheapest(c):.2f})"))
+           show=_show_price, describe=_describe_price)
 def price(offer, request):
     return offer.price_eur
 
 
+# duration
+
+def _show_duration(offer, request):
+    return hm(offer.duration_min)
+
+
+def _describe_duration(offer, request, accepted):
+    fastest = min(o.duration_min for o in accepted)
+    if offer.duration_min <= fastest:
+        return "the fastest acceptable journey"
+    slower = int(offer.duration_min - fastest)
+    return f"{hm(offer.duration_min)}, {slower} min slower than the fastest acceptable option"
+
+
 @criterion(key="duration", label="Duration", header="Durat", kind="relative",
-           show=lambda o, r: hm(o.duration_min),
-           describe=lambda o, r, c: ("the fastest acceptable journey" if o.duration_min <= min(x.duration_min for x in c)
-                                     else f"{hm(o.duration_min)}, {int(o.duration_min - min(x.duration_min for x in c))} min "
-                                          f"slower than the fastest acceptable option"))
+           show=_show_duration, describe=_describe_duration)
 def duration(offer, request):
     return float(offer.duration_min)
 
 
-def _departure_scale(gap, request, settings):
+# departure time
+
+def _scale_departure(gap, request, settings):
+    """100 inside the preferred window, falling in a straight line to 0 at the tolerance."""
     return max(0.0, 100.0 * (1 - gap / settings.departure_tolerance_min))
 
 
-def _departure_describe(o, r, c):
-    w = r.preferred_departure
-    if w is None:
-        return f"departs {o.departure:%H:%M} (no departure preference set)"
-    gap = w.gap_min(o.departure.time())
-    return (f"departs {o.departure:%H:%M}, inside your {w.label} window" if gap == 0
-            else f"departs {o.departure:%H:%M}, {gap} min outside your {w.label} window")
+def _show_departure(offer, request):
+    return f"{offer.departure:%H:%M}"
 
 
-@criterion(key="departure", label="Departure time", header="Depart", kind="absolute", scale=_departure_scale,
-           show=lambda o, r: f"{o.departure:%H:%M}", describe=_departure_describe)
+def _describe_departure(offer, request, accepted):
+    window = request.preferred_departure
+    if window is None:
+        return f"departs {offer.departure:%H:%M} (no departure preference set)"
+    gap = window.gap_min(offer.departure.time())
+    if gap == 0:
+        return f"departs {offer.departure:%H:%M}, inside your {window.label} window"
+    return f"departs {offer.departure:%H:%M}, {gap} min outside your {window.label} window"
+
+
+@criterion(key="departure", label="Departure time", header="Depart", kind="absolute",
+           scale=_scale_departure, show=_show_departure, describe=_describe_departure)
 def departure(offer, request):
     """Gap in minutes to the preferred window (0 inside it, or when there is no preference)."""
-    return 0.0 if request.preferred_departure is None else float(request.preferred_departure.gap_min(offer.departure.time()))
+    window = request.preferred_departure
+    if window is None:
+        return 0.0
+    return float(window.gap_min(offer.departure.time()))
 
+
+# flexibility
 
 # Changing a ticket is worth a little more than a refund: a shifted plan is the more common
 # need, and a change keeps the trip. These two numbers are judgement calls (see the report).
 CHANGE_VALUE, REFUND_VALUE = 60.0, 40.0
 
 
+def _scale_flexibility(value, request, settings):
+    """The raw value is already on the 0-100 scale."""
+    return value
+
+
+def _show_flexibility(offer, request):
+    return offer.fare.flags
+
+
+def _describe_flexibility(offer, request, accepted):
+    return f"'{offer.fare.name}' fare is {offer.fare.summary}"
+
+
 @criterion(key="flexibility", label="Flexibility", header="Flex", kind="absolute",
-           scale=lambda v, r, s: v, show=lambda o, r: o.fare.flags,
-           describe=lambda o, r, c: f"'{o.fare.name}' fare is {o.fare.summary}")
+           scale=_scale_flexibility, show=_show_flexibility, describe=_describe_flexibility)
 def flexibility(offer, request):
     return CHANGE_VALUE * offer.fare.changeable + REFUND_VALUE * offer.fare.refundable
 
 
+# transfers
+
+TRANSFER_PENALTY = 40.0   # points lost per transfer: 0 -> 100, 1 -> 60, 2 -> 20, 3 or more -> 0
+
+
+def _scale_transfers(count, request, settings):
+    return max(0.0, 100.0 - TRANSFER_PENALTY * count)
+
+
+def _show_transfers(offer, request):
+    return str(offer.transfers)
+
+
+def _describe_transfers(offer, request, accepted):
+    if offer.transfers == 0:
+        return "a direct journey"
+    return f"{offer.transfers} transfer(s) on the way"
+
+
 @criterion(key="transfers", label="Transfers", header="Trnsf", kind="absolute",
-           scale=lambda v, r, s: max(0.0, 100.0 - 40.0 * v), show=lambda o, r: str(o.transfers),
-           describe=lambda o, r, c: "a direct journey" if o.transfers == 0 else f"{o.transfers} transfer(s) on the way")
+           scale=_scale_transfers, show=_show_transfers, describe=_describe_transfers)
 def transfers(offer, request):
     return float(offer.transfers)
 
 
+# rating
+
+def _scale_rating(stars, request, settings):
+    """1 star gives 0 and 5 stars give 100."""
+    return (stars - 1.0) / 4.0 * 100.0
+
+
+def _show_rating(offer, request):
+    return "n/a" if offer.rating is None else f"{offer.rating:.1f}"
+
+
+def _describe_rating(offer, request, accepted):
+    if offer.rating is None:
+        return "no customer rating available"
+    return f"customer rating {offer.rating:.1f}/5"
+
+
 @criterion(key="rating", label="Rating", header="Rating", kind="absolute",
-           scale=lambda v, r, s: (v - 1.0) / 4.0 * 100.0,
-           show=lambda o, r: "n/a" if o.rating is None else f"{o.rating:.1f}",
-           describe=lambda o, r, c: "no customer rating available" if o.rating is None else f"customer rating {o.rating:.1f}/5")
+           scale=_scale_rating, show=_show_rating, describe=_describe_rating)
 def rating(offer, request):
     return offer.rating
 
 
+# CO2 emissions
+
+def _show_emissions(offer, request):
+    return "n/a" if offer.co2_kg is None else f"{offer.co2_kg:.1f}"
+
+
+def _describe_emissions(offer, request, accepted):
+    if offer.co2_kg is None:
+        return "no emissions figure reported"
+    return f"{offer.co2_kg:.1f} kg CO2 per passenger"
+
+
 @criterion(key="emissions", label="CO2 emissions", header="CO2", kind="relative",
-           show=lambda o, r: "n/a" if o.co2_kg is None else f"{o.co2_kg:.1f}",
-           describe=lambda o, r, c: ("no emissions figure reported" if o.co2_kg is None else
-                                     f"{o.co2_kg:.1f} kg CO2 per passenger"))
+           show=_show_emissions, describe=_describe_emissions)
 def emissions(offer, request):
     return offer.co2_kg
 
