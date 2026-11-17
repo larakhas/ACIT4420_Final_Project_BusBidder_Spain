@@ -205,8 +205,7 @@ With the default settings, the lock directory is `output/bookings.json.lock`.
 An interrupted process may leave this directory behind. Remove it manually
 only after confirming that no booking process is running.
 
-The booking loader checks the stored structure and rejects duplicate references.
-Confirmed bookings are used to calculate reserved capacity in one shared method.
+The booking loader checks the stored structure and rejects duplicate references. It also validates passenger counts, prices, fare conditions and timestamps. Inconsistent totals or cancellation details are rejected with a clear error message.
 
 ## Settings
 
