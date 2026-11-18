@@ -133,6 +133,10 @@ def load_companies(path: Path) -> dict[str, Company]:
         code = row["code"].strip().upper()
         if not re.fullmatch(r"[A-Z]{2}", code):
             raise DataFileError(f"companies.csv: bad company code '{row['code']}'")
+        if code in companies:
+            raise DataFileError(
+                f"companies.csv: duplicate company code '{code}'"
+            )
         companies[code] = Company(code, row["name"].strip(), row["profile"].strip())
     return companies
 
@@ -320,3 +324,18 @@ def write_rejected(rejected: list[Rejected], path: Path) -> None:
         writer.writerow(["line", "offer_id", "reasons"] + OFFER_COLUMNS)
         for r in rejected:
             writer.writerow([r.line, r.offer_id, " | ".join(r.reasons)] + [r.raw.get(c, "") for c in OFFER_COLUMNS])
+
+def test_duplicate_company_code_is_fatal(tmp_path):
+    write_data(tmp_path, [GOOD])
+
+    (tmp_path / "companies.csv").write_text(
+        "code,name,profile\n"
+        "SR,SolRuta,cheap\n"
+        "SR,DuplicateCompany,different\n",
+        encoding="utf-8",
+    )
+
+    with pytest.raises(
+        DataFileError, match="duplicate company code"
+    ):
+        load_catalogue(tmp_path)

@@ -254,3 +254,18 @@ def test_invalid_destination_distance(tmp_path, distance):
 
     with pytest.raises(DataFileError, match="distance_km must be positive"):
         load_destinations(path)
+        
+def test_duplicate_company_code_is_fatal(tmp_path):
+    write_data(tmp_path, [GOOD])
+
+    (tmp_path / "companies.csv").write_text(
+        "code,name,profile\n"
+        "SR,SolRuta,cheap\n"
+        "SR,DuplicateCompany,different\n",
+        encoding="utf-8",
+    )
+
+    with pytest.raises(
+        DataFileError, match="duplicate company code"
+    ):
+        load_catalogue(tmp_path)
