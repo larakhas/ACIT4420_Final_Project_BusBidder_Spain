@@ -132,7 +132,7 @@ There are 288 automated tests in the updated project. They cover normal use, inv
 | `tests/` | Automated tests |
 | `scripts/generate_data.py` | Creates the three data files from a fixed random seed |
 | `scripts/evaluate.py` | Runs the experiments used in the report |
-| `scripts/make_examples.sh` | Regenerates the standard report examples (01–20) |
+| `scripts/make_examples.sh` | | `scripts/make_examples.sh` | Regenerates all saved report examples(01-22) |
 | `examples/` | Saved output used as evidence in the report |
 | `docs/` | Architecture description and diagrams |
 
