@@ -1,13 +1,9 @@
+
 # BusBidder Spain
 
 Final project for ACIT4420 Problem-solving with scripting (OsloMet, Fall 2026).
 
-BusBidder Spain is a fictional marketplace for bus journeys from Madrid to fifteen Spanish
-destinations. A traveller describes a trip, five simulated companies return offers, and the
-program removes the offers that break a mandatory requirement and ranks the rest with a
-weighted scoring model. It explains why the top offer ranks first and lets the traveller make
-a simulated booking.
-
+BusBidder Spain is a fictional marketplace for bus journeys from Madrid to fifteen Spanish destinations. A traveller describes a trip, five simulated companies return offers, and the program removes the offers that break a mandatory requirement and ranks the rest with a weighted scoring model. It explains why the top offer ranks first and lets the traveller make a simulated booking.
 
 ## Quick reference
 
@@ -26,20 +22,20 @@ All commands are run from the project folder (the one that contains this file).
 ## Requirements
 
 - Python 3.10 or newer. I developed and tested the project with Python 3.11.9.
-- The application itself uses only the Python standard library
-- `pytest` 7.0 or newer is needed to run the tests
+- The application itself uses only the Python standard library.
+- `pytest` 7.0 or newer is needed to run the tests.
 
 ## Setup
 
 Open a terminal in the project folder, the one that contains this file.
+
 Create a virtual environment:
 
 ```bash
 python -m venv .venv
 ```
 
-You only need to create it once. If `.venv` already exists, skip this command and
-activate the existing environment.
+You only need to create it once. If `.venv` already exists, skip this command and activate the existing environment.
 
 On Windows PowerShell:
 
@@ -59,24 +55,19 @@ Then install the test dependency:
 python -m pip install -r requirements.txt
 ```
 
-When you open a new terminal later, activate the environment again before running the
-program or tests. If your computer uses `python3` instead of `python`, use that in the
-Python commands.
+When you open a new terminal later, activate the environment again before running the program or tests. If your computer uses `python3` instead of `python`, use that in the Python commands.
 
 ## Running the program
 
-The entry point is `bbspain/__main__.py`. The project has no `main.py`. The exact command to
-run the program, from the project folder, is:
+The entry point is `bbspain/__main__.py`. The project has no `main.py`. The exact command to run the program, from the project folder, is:
 
-```
+```bash
 python -m bbspain
 ```
 
 ### Interactive mode
 
-With no command, the program starts in interactive mode: it asks for a destination, a
-traveller profile and the number of passengers, shows the ranking and offers to book one of
-the top five.
+With no command, the program starts in interactive mode: it asks for a destination, a traveller profile and the number of passengers, shows the ranking and offers to book one of the top five.
 
 ### Commands
 
@@ -94,12 +85,11 @@ The same functions are available as commands:
 | `python -m bbspain show <reference>` | Show one booking |
 | `python -m bbspain cancel <reference>` | Cancel a booking |
 
-`rank` uses the destination Malaga, the dates 12-14 July 2026 and the profile `brief` unless
-other values are given. `python -m bbspain rank -h` lists every option.
+`rank` uses the destination Malaga, the dates 12-14 July 2026 and the profile `brief` unless other values are given. `python -m bbspain rank -h` lists every option.
 
 ### Examples
 
-```
+```bash
 python -m bbspain rank
 python -m bbspain rank -p business -d Barcelona
 python -m bbspain rank -d Seville --from 2026-07-12 --to 2026-07-13 -n 2
@@ -110,22 +100,22 @@ python -m bbspain book --offer CL_AGP_260714_0930_2 --name "Rodrigo Vidal" -n 2
 python -m bbspain rank -p budget -d Seville --top 3
 python -m bbspain rank -p budget -d Seville --departure any --top 3
 ```
-The last two commands compare the budget traveller's recommendations for Seville with and without a preferred departure time. The example shows how changing one preference can affect the highest-ranked offer.
+
+The last two commands compare recommendations for the budget traveller on the Seville route with and without an afternoon departure preference. Only that preference changes; the other settings stay the same. The top offer changes from VerdeBus (EUR 47.31) to NocheVia (EUR 28.43) in the saved experiment.
 
 ### Options for all commands
 
-Options that apply to all commands are written before the command: `--root <folder>`,
-`--config <file>`, `--normaliser <name>` and `--verbose`.
+Options that apply to all commands are written before the command: `--root <folder>`, `--config <file>`, `--normaliser <name>` and `--verbose`.
 
 ## Running the tests
 
 The exact command to run the tests, from the project folder, is:
 
-```
+```bash
 python -m pytest
 ```
 
-There are 287 automated tests. They cover normal use, invalid input, missing data and boundary cases, including validation of destination distances, duplicate company codes and invalid journey durations.
+There are 288 automated tests in the updated project. They cover normal use, invalid input, missing data and boundary cases, including invalid destination distances, duplicate company codes, incorrect journey durations and booking cancellation after departure. Run the command above to confirm the current test count.
 
 ## Where the files are
 
@@ -142,7 +132,7 @@ There are 287 automated tests. They cover normal use, invalid input, missing dat
 | `tests/` | Automated tests |
 | `scripts/generate_data.py` | Creates the three data files from a fixed random seed |
 | `scripts/evaluate.py` | Runs the experiments used in the report |
-| `scripts/make_examples.sh` | Regenerates everything in `examples/` |
+| `scripts/make_examples.sh` | Regenerates the standard report examples (01–20) |
 | `examples/` | Saved output used as evidence in the report |
 | `docs/` | Architecture description and diagrams |
 
@@ -160,50 +150,35 @@ The program creates these files when it runs. They are not in the repository:
 
 The program checks every row in `data/offers.csv` when it starts.
 
-- **Fatal errors.** If a data file is missing, cannot be read, is empty or lacks a required column, the program stops with an error message. The loader also checks for duplicate company codes and invalid destination distances.
-- **Rejected rows.** A row with an impossible or inconsistent value is set aside and written
-  to `output/rejected_offers.csv` together with every reason. Examples are a negative price,
-  an unknown company or destination, an invalid date, arrival before departure, a rating
-  outside 1-5, a negative seat count, a duplicate offer id and an offer id that does not
-  match the row.
-- **Corrected rows.** Differences in capitalisation, accents and spacing in destination names are fixed. Missing durations are calculated from departure and arrival times, while durations that disagree with the timestamps are corrected. Invalid duration values are rejected. Corrections are recorded so they can be reviewed.
-- **Missing optional values.** A missing rating or CO2 value is kept as missing. The scoring
-  model gives it a neutral score of 50 and marks it with `*` in the ranking.
-- **Sold-out offers.** An offer with zero seats is valid data. The seat constraint removes it
-  during filtering.
+- **Fatal errors.** If a data file is missing, cannot be read, is empty or lacks a required column, the program stops with an error message. Duplicate company codes and non-positive destination distances are also rejected.
+- **Rejected rows.** A row with an impossible or inconsistent value is set aside and written to `output/rejected_offers.csv` together with every reason. Examples are a negative price, an unknown company or destination, an invalid date, arrival before departure, a rating outside 1-5, a negative seat count, a duplicate offer id and an offer id that does not match the row.
+- **Corrected rows.** Differences in capitalisation, accents and spacing in destination names are fixed. Missing durations are calculated from the departure and arrival times; durations that disagree with the timestamps are corrected. Non-numeric, zero and negative durations are rejected instead of silently corrected. Every correction is logged.
+- **Missing optional values.** A missing rating or CO2 value is kept as missing. The scoring model gives it a neutral score of 50 and marks it with `*` in the ranking.
+- **Sold-out offers.** An offer with zero seats is valid data. The seat constraint removes it during filtering.
 
-The dataset contains 13 broken rows and 3 rows that need correction on purpose, so that the
-validation has real problems to find. `python -m bbspain validate` shows the result.
+The dataset contains 13 broken rows and 3 rows that need correction on purpose, so that the validation has real problems to find. `python -m bbspain validate` shows the result.
 
 ## Hard constraints and soft preferences
 
 ### Hard constraints
 
-Hard constraints remove an offer before ranking: route, travel dates, free seats and, when the
-traveller sets them, maximum price, maximum transfers, maximum duration, minimum luggage
-allowance, changeable ticket and refundable ticket.
+Hard constraints remove an offer before ranking: route, travel dates, free seats and, when the traveller sets them, maximum price, maximum transfers, maximum duration, minimum luggage allowance, changeable ticket and refundable ticket.
 
 ### Soft preferences
 
-Soft preferences are scored from 0 to 100 and weighted: price, duration, departure time,
-flexibility, transfers, rating and CO2 emissions. Weights must total 100 %. The output of
-`rank` lists both groups above the ranking.
+Soft preferences are scored from 0 to 100 and weighted: price, duration, departure time, flexibility, transfers, rating and CO2 emissions. Weights must total 100%. The output of `rank` lists both groups above the ranking.
 
 ### Weight rules
 
-Custom search weights and traveller profiles must assign positive weights to
-price, duration, departure-time convenience and ticket flexibility. Additional
-criteria are optional. All weights must total 100% or 1.0.
+Custom search weights and traveller profiles must assign positive weights to price, duration, departure-time convenience and ticket flexibility. Additional criteria are optional. All weights must total 100% or 1.0.
 
 ## Booking storage and locking
 
-Booking and cancellation operations acquire an exclusive local lock before
-reloading the booking file, checking the relevant conditions and saving changes.
-Other writers receive a clear message asking them to retry.
+Booking and cancellation operations acquire an exclusive local lock before reloading the booking file, checking the relevant conditions and saving changes. Other writers receive a clear message asking them to retry.
 
-With the default settings, the lock directory is `output/bookings.json.lock`.
-An interrupted process may leave this directory behind. Remove it manually
-only after confirming that no booking process is running.
+A booking can be cancelled only before the bus departs. If the departure time has passed, the cancellation is rejected, the booking stays confirmed and the seats are not released. A simulated clock is used with the supplied July 2026 dataset.
+
+With the default settings, the lock directory is `output/bookings.json.lock`. An interrupted process may leave this directory behind. Remove it manually only after confirming that no booking process is running.
 
 The booking loader checks the stored structure and rejects duplicate references. It also validates passenger counts, prices, fare conditions and timestamps. Inconsistent totals or cancellation details are rejected with a clear error message.
 
@@ -223,33 +198,35 @@ The booking loader checks the stored structure and rejects duplicate references.
 | `default_date_from`, `default_date_to` | Travel window used when no dates are given |
 | `data_dir`, `output_dir`, `log_file`, `profiles_file` | File locations |
 
-The dataset is fixed in July 2026, so `simulated_now` is set to `2026-07-05 12:00`. With the
-value `null` the program uses the real clock, and offers that have already departed cannot be
-booked.
+The dataset is fixed in July 2026, so `simulated_now` is set to `2026-07-05 12:00`. With the value `null` the program uses the real clock, and offers that have already departed cannot be booked.
 
 ## Reproducing the examples
 
 ### The saved examples
 
-The files in `examples/` are created by one script. On Windows, run it in Git Bash:
+The standard saved examples (01–20) are created by one script. On Windows, run it in Git Bash:
 
-```
+```bash
 sh scripts/make_examples.sh
 ```
 
 If `python3` is not available, use `PYTHON=python sh scripts/make_examples.sh`.
 
-The script works on a temporary copy of `config/` and `data/`, so it never changes your own
-bookings or log file.
+**Note:** The script removes existing `.txt` files in `examples/` before it regenerates its standard examples. If you have saved the Seville experiment as `21_seville_afternoon.txt` and `22_seville_any.txt`, recreate them after running the script:
 
-The ranking results are the same on every run because the dataset comes from a fixed random
-seed and ties are sorted in a fixed order. Only the booking reference in
-`examples/18_booking_demo.txt` changes, because it is random and contains the current date.
+```bash
+python -m bbspain rank -p budget -d Seville --top 3 > examples/21_seville_afternoon.txt
+python -m bbspain rank -p budget -d Seville --departure any --top 3 > examples/22_seville_any.txt
+```
+
+The script works on a temporary copy of `config/` and `data/`, so it never changes your own bookings or log file.
+
+The ranking results are the same on every run because the dataset comes from a fixed random seed and ties are sorted in a fixed order. Only the booking reference in `examples/18_booking_demo.txt` changes, because it is random and contains the current date.
 
 ### The dataset
 
 To recreate the dataset itself:
 
-```
+```bash
 python scripts/generate_data.py
 ```
