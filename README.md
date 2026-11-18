@@ -132,7 +132,7 @@ There are 288 automated tests in the updated project. They cover normal use, inv
 | `tests/` | Automated tests |
 | `scripts/generate_data.py` | Creates the three data files from a fixed random seed |
 | `scripts/evaluate.py` | Runs the experiments used in the report |
-| `scripts/make_examples.sh` | | `scripts/make_examples.sh` | Regenerates all saved report examples(01-22) |
+| `scripts/make_examples.sh` | Regenerates all saved report examples(01-22) |
 | `examples/` | Saved output used as evidence in the report |
 | `docs/` | Architecture description and diagrams |
 
@@ -204,7 +204,7 @@ The dataset is fixed in July 2026, so `simulated_now` is set to `2026-07-05 12:0
 
 ### The saved examples
 
-The standard saved examples (01–20) are created by one script. On Windows, run it in Git Bash:
+All 22 saved examples are created by one script. On Windows, run it in Git Bash:
 
 ```bash
 sh scripts/make_examples.sh
