@@ -269,3 +269,19 @@ def test_duplicate_company_code_is_fatal(tmp_path):
         DataFileError, match="duplicate company code"
     ):
         load_catalogue(tmp_path)
+        
+@pytest.mark.parametrize("duration", ["not-a-number", "0", "-5"])
+def test_invalid_duration_is_rejected(refs, duration):
+    offer, problems, _ = check(refs, duration_min=duration)
+
+    assert offer is None
+    assert any("duration_min" in p for p in problems)
+
+
+def test_missing_duration_is_recomputed(refs):
+    offer, problems, corrections = check(refs, duration_min="")
+
+    assert offer is not None
+    assert problems == []
+    assert offer.duration_min == 420
+    assert any("recomputed" in c.message for c in corrections)
