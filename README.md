@@ -107,7 +107,10 @@ python -m bbspain rank --max-price 45 --max-transfers 0 --show-excluded
 python -m bbspain rank --weights price=25,duration=25,departure=25,flexibility=25 --departure evening
 python -m bbspain --normaliser minmax rank
 python -m bbspain book --offer CL_AGP_260714_0930_2 --name "Rodrigo Vidal" -n 2
+python -m bbspain rank -p budget -d Seville --top 3
+python -m bbspain rank -p budget -d Seville --departure any --top 3
 ```
+The last two commands compare the budget traveller's recommendations for Seville with and without a preferred departure time. The example shows how changing one preference can affect the highest-ranked offer.
 
 ### Options for all commands
 
@@ -122,7 +125,7 @@ The exact command to run the tests, from the project folder, is:
 python -m pytest
 ```
 
-There are 280 tests. They cover normal use, invalid input, missing data and boundary values.
+There are 287 automated tests. They cover normal use, invalid input, missing data and boundary cases, including validation of destination distances, duplicate company codes and invalid journey durations.
 
 ## Where the files are
 
@@ -157,16 +160,13 @@ The program creates these files when it runs. They are not in the repository:
 
 The program checks every row in `data/offers.csv` when it starts.
 
-- **Fatal errors.** If a data file is missing, cannot be read, is empty or lacks a required
-  column, the program stops with an error message.
+- **Fatal errors.** If a data file is missing, cannot be read, is empty or lacks a required column, the program stops with an error message. The loader also checks for duplicate company codes and invalid destination distances.
 - **Rejected rows.** A row with an impossible or inconsistent value is set aside and written
   to `output/rejected_offers.csv` together with every reason. Examples are a negative price,
   an unknown company or destination, an invalid date, arrival before departure, a rating
   outside 1-5, a negative seat count, a duplicate offer id and an offer id that does not
   match the row.
-- **Corrected rows.** Differences in capitalisation, accents and spacing in destination names
-  are fixed. If the stated duration does not match the departure and arrival times, the
-  duration is recalculated from the times. Every correction is logged.
+- **Corrected rows.** Differences in capitalisation, accents and spacing in destination names are fixed. Missing durations are calculated from departure and arrival times, while durations that disagree with the timestamps are corrected. Invalid duration values are rejected. Corrections are recorded so they can be reviewed.
 - **Missing optional values.** A missing rating or CO2 value is kept as missing. The scoring
   model gives it a neutral score of 50 and marks it with `*` in the ranking.
 - **Sold-out offers.** An offer with zero seats is valid data. The seat constraint removes it
