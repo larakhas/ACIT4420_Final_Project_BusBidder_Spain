@@ -271,14 +271,35 @@ def validate_offer(row: dict, line: int, companies: dict[str, Company],
         computed = int((arrival - departure).total_seconds() // 60)
         if computed > MAX_DURATION_MIN:
             problems.append(f"arrival: journey of {computed} min exceeds the {MAX_DURATION_MIN} min plausibility limit")
-        stated = _parse_number(row.get("duration_min"), "duration_min", [], integer=True, optional=True)
-        if not problems and stated is not None and abs(stated - computed) > 1:
-            corrections.append(Correction(line, offer_id,
-                                          f"duration_min {stated} -> {computed} (recomputed from timestamps)"))
-        if destination and row.get("destination", "").strip() != destination.name and not problems:
-            corrections.append(Correction(line, offer_id,
-                                          f"destination '{row['destination']}' -> '{destination.name}' (normalised)"))
+        duration_text = (row.get("duration_min") or "").strip()
 
+        stated = _parse_number(
+            duration_text, "duration_min", problems,
+            integer=True, optional=True
+        )
+
+        if stated is not None and stated <= 0:
+            problems.append(
+                f"duration_min: must be positive (got {stated})"
+            )
+    
+    if not problems and not duration_text:
+        corrections.append(Correction(
+            line, offer_id,
+            f"duration_min missing -> {computed} (recomputed from timestamps)"
+        ))
+        
+    elif not problems and stated is not None and abs(stated - computed) > 1:
+        corrections.append(Correction(
+            line, offer_id,
+            f"duration_min {stated} -> {computed} (recomputed from timestamps)"
+        ))
+    
+    if destination and row.get("destination", "").strip() != destination.name and not problems:
+        corrections.append(Correction(
+                line, offer_id,
+                f"destination '{row['destination']}' -> '{destination.name}' (normalised)"
+        ))
     if problems:
         return None, problems
 
@@ -325,17 +346,3 @@ def write_rejected(rejected: list[Rejected], path: Path) -> None:
         for r in rejected:
             writer.writerow([r.line, r.offer_id, " | ".join(r.reasons)] + [r.raw.get(c, "") for c in OFFER_COLUMNS])
 
-def test_duplicate_company_code_is_fatal(tmp_path):
-    write_data(tmp_path, [GOOD])
-
-    (tmp_path / "companies.csv").write_text(
-        "code,name,profile\n"
-        "SR,SolRuta,cheap\n"
-        "SR,DuplicateCompany,different\n",
-        encoding="utf-8",
-    )
-
-    with pytest.raises(
-        DataFileError, match="duplicate company code"
-    ):
-        load_catalogue(tmp_path)
