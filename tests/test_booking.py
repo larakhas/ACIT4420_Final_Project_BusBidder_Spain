@@ -245,3 +245,25 @@ def test_can_book_one_minute_before_departure(tmp_path):
     before = datetime(2026, 7, 13, 8, 59)
     s = BookingStore(tmp_path / "b.json", clock=lambda: NOW, travel_clock=lambda: before)
     assert s.book(make_offer(), "Rodrigo Vidal").status is BookingStatus.CONFIRMED
+
+def test_cannot_cancel_after_departure(tmp_path):
+    travel_time = [datetime(2026, 7, 5, 10, 30)]
+
+    store = BookingStore(
+        tmp_path / "bookings.json",
+        clock=lambda: NOW,
+        travel_clock=lambda: travel_time[0],
+    )
+
+    offer = make_offer(seats=2, refundable=True)
+    booking = store.book(offer, "Rodrigo Vidal")
+
+    # Move the simulated time to the departure
+    travel_time[0] = offer.departure
+
+    with pytest.raises(BookingError, match="already departed"):
+        store.cancel(booking.reference)
+
+    # The booking must remain confirmed
+    assert store.get(booking.reference).status is BookingStatus.CONFIRMED
+    assert store.seats_left(offer) == 1

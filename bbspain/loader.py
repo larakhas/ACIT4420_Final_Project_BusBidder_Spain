@@ -342,7 +342,10 @@ def write_rejected(rejected: list[Rejected], path: Path) -> None:
     path.parent.mkdir(parents=True, exist_ok=True)
     with open(path, "w", newline="", encoding="utf-8") as handle:
         writer = csv.writer(handle)
-        writer.writerow(["line", "offer_id", "reasons"] + OFFER_COLUMNS)
+        writer.writerow(
+            ["line", "offer_id", "reasons"]
+            + ["raw_offer_id" if c == "offer_id" else c for c in OFFER_COLUMNS]
+        )
         for r in rejected:
             writer.writerow([r.line, r.offer_id, " | ".join(r.reasons)] + [r.raw.get(c, "") for c in OFFER_COLUMNS])
 

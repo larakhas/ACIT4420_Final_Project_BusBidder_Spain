@@ -82,7 +82,7 @@ def build_parser() -> argparse.ArgumentParser:
     return p
 
 
-# -------------------------------------------------------------------------------- helpers
+# helpers
 
 def request_and_weights(mk: Marketplace, args, profile_key: str):
     prof = mk.profile(profile_key)
@@ -117,7 +117,7 @@ def print_result(mk, prof, request, weights, top, show_excluded=False, out=print
     return result
 
 
-# ------------------------------------------------------------------------------- commands
+# commands
 
 def cmd_rank(mk, args):
     prof, request, weights = request_and_weights(mk, args, args.profile)

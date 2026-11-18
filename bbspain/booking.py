@@ -279,6 +279,13 @@ class BookingStore:
         booking = self.get(reference)
         if booking.status is BookingStatus.CANCELLED:
             raise BookingError(f"Booking {booking.reference} is already cancelled")
+        travel_now = self._travel_clock() if self._travel_clock else self._clock()
+
+        if booking.departure <= travel_now:
+            raise BookingError(
+                f"Booking {booking.reference} cannot be cancelled: "
+                "the bus has already departed"
+            )
         refund = round(booking.total_price_eur * (1 - self.fee_pct / 100), 2) if booking.fare.refundable else 0.0
         cancelled = replace(booking, status=BookingStatus.CANCELLED, refund_eur=refund,
                             cancelled_at=self._clock().replace(microsecond=0),

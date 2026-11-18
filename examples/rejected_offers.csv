@@ -1,4 +1,4 @@
-line,offer_id,reasons,offer_id,company_code,destination,departure,arrival,duration_min,price_eur,transfers,luggage_kg,fare_name,changeable,refundable,seats_available,rating,co2_kg
+line,offer_id,reasons,raw_offer_id,company_code,destination,departure,arrival,duration_min,price_eur,transfers,luggage_kg,fare_name,changeable,refundable,seats_available,rating,co2_kg
 2270,SR_AGP_260713_0731_1,price_eur: must be above 0 and at most 500 (got -9.9),SR_AGP_260713_0731_1,SR,Malaga,2026-07-13 07:31,2026-07-13 15:20,469,-9.90,1,15,Saver,false,false,20,3.4,30.0
 2271,SR_LIS_260713_0800_1,destination: unknown destination 'Lisbon',SR_LIS_260713_0800_1,SR,Lisbon,2026-07-13 08:00,2026-07-13 16:00,480,40.00,1,15,Saver,false,false,20,3.4,30.0
 2272,CL_VLC_260732_1000_1,departure: '2026-07-32 10:00' is not a valid date and time (YYYY-MM-DD HH:MM) | arrival: '2026-07-32 15:00' is not a valid date and time (YYYY-MM-DD HH:MM),CL_VLC_260732_1000_1,CL,Valencia,2026-07-32 10:00,2026-07-32 15:00,300,30.00,0,15,Light,false,false,10,4.0,20.0

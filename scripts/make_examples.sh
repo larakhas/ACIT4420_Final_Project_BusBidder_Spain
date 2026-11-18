@@ -11,11 +11,21 @@ WORK=$(mktemp -d)
 trap 'rm -rf "$WORK"' EXIT
 cp -r config data "$WORK"/
 mkdir -p "$OUT"
-rm -f "$OUT"/*.txt
+
 
 bb() { "$PY" -m bbspain --root "$WORK" "$@"; }
-run() { name="$1"; shift; bb "$@" > "$OUT/$name.txt" 2>&1 || true; echo "wrote $OUT/$name.txt"; }
+run() {
+    name="$1"
+    shift
 
+    if ! bb "$@" > "$OUT/$name.txt" 2>&1; then
+        echo "Failed while creating $OUT/$name.txt" >&2
+        cat "$OUT/$name.txt" >&2
+        exit 1
+    fi
+
+    echo "wrote $OUT/$name.txt"
+}
 run 01_validation_report            validate
 cp "$WORK/output/rejected_offers.csv" "$OUT/rejected_offers.csv"
 run 02_profiles                     profiles
@@ -58,3 +68,6 @@ echo "wrote $OUT/20_evaluation.txt"
 
 grep -E "Rejected line|Corrected line|Loaded" "$WORK/logs/busbidder.log" | tail -20 | sed 's/^[0-9-]* [0-9:,]* //' > "$OUT/19_log_excerpt.txt"
 echo "wrote $OUT/19_log_excerpt.txt"
+
+run 21_seville_afternoon rank -p budget -d Seville --top 3
+run 22_seville_any rank -p budget -d Seville --departure any --top 3
