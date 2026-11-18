@@ -98,7 +98,7 @@ def normalise_name(text: str) -> str:
     return " ".join(stripped.split()).casefold()
 
 
-# ----------------------------------------------------------------------------- file helpers
+# file helpers
 
 def _read_csv(path: Path, required: list[str]) -> list[dict]:
     path = Path(path)
@@ -139,19 +139,38 @@ def load_companies(path: Path) -> dict[str, Company]:
 
 def load_destinations(path: Path) -> dict[str, Destination]:
     destinations = {}
+
     for row in _read_csv(path, DESTINATION_COLUMNS):
         code = row["code"].strip().upper()
+
         if not re.fullmatch(r"[A-Z]{3}", code):
-            raise DataFileError(f"destinations.csv: bad destination code '{row['code']}'")
+            raise DataFileError(
+                f"destinations.csv: bad destination code '{row['code']}'"
+            )
+
         try:
-            destinations[code] = Destination(code, row["name"].strip(), row["region"].strip(),
-                                             _to_bool(row["coastal"]), int(row["distance_km"]))
+            distance = int(row["distance_km"])
+
+            if distance <= 0:
+                raise ValueError("distance_km must be positive")
+
+            destinations[code] = Destination(
+                code,
+                row["name"].strip(),
+                row["region"].strip(),
+                _to_bool(row["coastal"]),
+                distance
+            )
+
         except ValueError as exc:
-            raise DataFileError(f"destinations.csv: bad value in row for {code}: {exc}") from exc
+            raise DataFileError(
+                f"destinations.csv: bad value in row for {code}: {exc}"
+            ) from exc
+
     return destinations
 
 
-# ------------------------------------------------------------------------ offer validation
+# offer validation
 
 def _parse_time(text: str, label: str, problems: list[str]) -> datetime | None:
     try:

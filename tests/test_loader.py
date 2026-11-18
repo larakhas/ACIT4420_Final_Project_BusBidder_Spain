@@ -6,8 +6,10 @@ from pathlib import Path
 import pytest
 
 from bbspain.errors import DataFileError, InvalidRequestError
-from bbspain.loader import (OFFER_COLUMNS, OFFER_ID, load_catalogue, normalise_name, validate_offer,
-                            write_rejected)
+from bbspain.loader import (
+    OFFER_COLUMNS, OFFER_ID, load_catalogue, load_destinations,
+    normalise_name, validate_offer, write_rejected
+)
 
 GOOD = dict(offer_id="SR_AGP_260713_0900_1", company_code="SR", destination="Malaga",
             departure="2026-07-13 09:00", arrival="2026-07-13 16:00", duration_min="420", price_eur="40.00",
@@ -239,3 +241,16 @@ def test_rejected_rows_are_written_for_review(project, tmp_path):
     write_rejected(cat.rejected, out)
     rows = list(csv.reader(open(out, encoding="utf-8")))
     assert rows[0][:3] == ["line", "offer_id", "reasons"] and len(rows) == 14
+
+@pytest.mark.parametrize("distance", ["-10", "0"])
+def test_invalid_destination_distance(tmp_path, distance):
+    path = tmp_path / "destinations.csv"
+
+    path.write_text(
+        "code,name,region,coastal,distance_km\n"
+        f"AGP,Malaga,Andalusia,true,{distance}\n",
+        encoding="utf-8",
+    )
+
+    with pytest.raises(DataFileError, match="distance_km must be positive"):
+        load_destinations(path)
